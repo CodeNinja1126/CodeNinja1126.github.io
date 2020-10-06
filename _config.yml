@@ -1,12 +1,12 @@
 theme: jekyll-theme-hacker
 title: 혀누 블로그
 description: 혀누 공부장
-url: https://www.naver.com
+url: 
 author:
-  name: [Your name]
-  email: [Your email address]
-  url: [URL of your website]
+  name: 한현우
+  email: zkfktm1525@naver.com
+  url: 
 
-paginate: [Number of posts in one paginated section (default: 3)]
-owner: [Your name]
-year: [Current Year]
+paginate: 3
+owner: 한현우
+year: 2020
