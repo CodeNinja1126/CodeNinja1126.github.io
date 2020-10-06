@@ -1,4 +1,4 @@
-title: 혀누 공부장
+title: "혀누 공부장"
 description: "딥웹 아님"
 author:
   name: "혀누"
@@ -28,5 +28,5 @@ plugins:
   - jekyll-sitemap
 
 # Custom variables
-owner : "SomeHacker"
+owner : "혀누"
 year : "2020"
