@@ -1,7 +1,7 @@
-title: "혀누 공부장"
-description: "딥웹 아님"
+title: "Ninja Scroll"
+description: 
 author:
-  name: "혀누"
+  name: "CodeNinja1126"
   email: "zkfktm1525@naver.com"
   url: "https://CodeNinja1126.github.io"
 
@@ -10,7 +10,7 @@ baseurl: /
 source: .
 destination: ./_site
 permalink: /:title
-paginate: 3
+paginate: 10
 paginate_path: /page/:num/
 
 defaults:
