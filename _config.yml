@@ -1,3 +1,10 @@
+# Math equation
+markdown: kramdown
+highlighter: rouge
+lsi: false
+excerpt_separator: "\n\n"
+incremental: false
+
 title: "Ninja Scroll"
 description: 
 author:
