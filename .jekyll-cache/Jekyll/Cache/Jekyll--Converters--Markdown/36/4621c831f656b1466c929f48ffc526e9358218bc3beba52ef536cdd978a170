@@ -1,0 +1,392 @@
+I"ف<p>이번 포스팅에는 edwith 부스트코스 머신러닝을 위한 파이썬 강의에서 다뤘던,</p>
+
+<p>numpy를 이용한 행렬 연산에 대한 내용을 정리한다.</p>
+
+<h1 id="numpy">numpy</h1>
+<p>numpy를 사용하는 데에는 다음과 같은 이유가 있다.</p>
+
+<ul>
+  <li>
+    <p>일반 list에 비해 빠르고 메모리 효율적</p>
+  </li>
+  <li>
+    <p>반복문 없이 데이터 배열에 대한 처리를 지원함</p>
+  </li>
+  <li>
+    <p>선형대수와 관련된 다양한 기능을 제공함</p>
+  </li>
+  <li>
+    <p>c, c++, 포트란 등의 언어와 통합 가능</p>
+  </li>
+</ul>
+
+<p>일반적으로 다음과 같이 선언해 사용하는 것이 사실상 표준이다.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+</code></pre></div></div>
+
+<h1 id="ndarray">ndarray</h1>
+<p>numpy는 일반적으로 c로 구현되었기 때문에 <strong>데이터 타입을 정적으로 선언</strong>해주어야 한다.</p>
+
+<p>또한 <strong>한 가지의 데이터 type</strong>만 배열에 넣을 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="s">'1'</span><span class="p">,</span><span class="s">'2'</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>이와 같이 선언해 ndarray를 생성한다.</p>
+
+<p>일반적으로 머신러닝은 <code class="language-plaintext highlighter-rouge">float64</code>나 <code class="language-plaintext highlighter-rouge">float32</code> 데이터 타입을 많이 사용한다.</p>
+
+<p>선언할 때 다른 타입의 자료형을 넣어도 결국엔 선언한 자료형으로 통일되어 저장된다.</p>
+
+<h2 id="멤버-변수">멤버 변수</h2>
+
+<ul>
+  <li>
+    <p><strong>dtype</strong> : 데이터 타입을 반환</p>
+  </li>
+  <li><strong>shape</strong> : 각 차원 별로 길이를 반환, 이 때 역순으로 높은 차원 부터 낮은 차원 순으로 보여준다.
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test_matrix</span> <span class="o">=</span> <span class="p">[[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>  <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">]]]</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">test_matrix</span><span class="p">)</span>
+<span class="n">arr</span><span class="p">.</span><span class="n">shape</span>
+<span class="c1"># (2, 2, 2)
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>ndim</strong> : 차원의 개수를 반환한다.</p>
+  </li>
+  <li>
+    <p><strong>size</strong> : 데이터의 총 길이, shape의 각 요소를 전부 곱한 값이다.</p>
+  </li>
+  <li><strong>T</strong> : transpose 행렬을 반환한다.</li>
+</ul>
+
+<h1 id="hadling-shape">hadling shape</h1>
+
+<h2 id="reshape">reshape</h2>
+
+<p>데이터의 사이즈는 그대로 shape을 변경하는 것</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test_matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">8</span><span class="p">]]</span>
+<span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">test_matrix</span><span class="p">).</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1">#[[[1, 2],
+#  [3, 4]],
+#
+# [[1, 2],
+#  [5, 8]]]
+</span></code></pre></div></div>
+
+<p>이렇게 선언해 사용한다.</p>
+
+<p>매개 변수를 <code class="language-plaintext highlighter-rouge">-1</code>로 주면 적절한 값으로 설정된다.</p>
+
+<p>이 때 <code class="language-plaintext highlighter-rouge">-1</code>로 준 매개 변수는 1개를 넘어선 안된다.</p>
+
+<h2 id="flatten">flatten</h2>
+
+<p>다차원 array를 1차원 array로 변환한다.</p>
+
+<p>매개변수 없이 flatten()메소드를 선언해주면 된다.</p>
+
+<h1 id="indexing--slicing">Indexing &amp; Slicing</h1>
+
+<h2 id="indexing">indexing</h2>
+
+<p><code class="language-plaintext highlighter-rouge">arr[1][0]</code>을 <code class="language-plaintext highlighter-rouge">arr[1, 0]</code>과 같이 나타낼 수 있다.</p>
+
+<h2 id="slicing">slicing</h2>
+
+<p>list와 달리 행과 열 부분을 나눠서 slicing이 가능하다.</p>
+
+<p>matrix의 부분 집합을 추출할 때 유용하다.</p>
+
+<p>예를 들어, 2차원 shape의 numpy의 경우 다음과 같이 slicing할 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test_matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">test_matrix</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">arr</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+<span class="c1">#[[1, 2, 3],
+# [1, 2, 5]]
+</span></code></pre></div></div>
+
+<h1 id="create-function">create function</h1>
+
+<h2 id="arange">arange</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">...</span> <span class="p">,</span> <span class="mi">29</span><span class="p">])</span>
+</code></pre></div></div>
+<p>위의 두 선언은 같은 결과를 낸다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>이렇게 선언할 경우, 첫번째  인자와 두번째 인자는 범위, 세번째 인자는 간격이다.</p>
+
+<p>당연히 float타입으로 array가 만들어질 것이다.</p>
+
+<p>일반적인 리스트에서는 int 단위로밖에 step이 되지 않는다.</p>
+
+<p>그래서 float단위로 step 리스트를 만들고 싶다면 다음과 같이 선언해주면 된다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">).</span><span class="n">tolist</span><span class="p">()</span>
+</code></pre></div></div>
+<p>arange 메소드는 reshape함수와 같이 많이 사용된다.</p>
+
+<h2 id="zeros-ones-and-empty">zeros, ones and empty</h2>
+
+<p>각각 0,1 비어진 공간 으로만 이루어진 array를 생성하는 함수, 원형은 다음과 같다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.[</span><span class="n">함수명</span><span class="p">](</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+</code></pre></div></div>
+<p>empty는 일반적으로 잘 쓰이지 않는다.</p>
+
+<h3 id="something_like">[something]_like</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">30</span><span class="p">).</span><span class="n">reshape</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">test_matrix</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>이렇게 선언할 경우 test_matrix와 같은 shape을 가진, 모든 원소가 1인 array를 생성한다.</p>
+
+<h2 id="identity">identity</h2>
+
+<p>단위 행렬을 생성하는 함수</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1">#행과 열의 개수를 인수로 받음
+</span></code></pre></div></div>
+
+<h2 id="eye">eye</h2>
+
+<p>대각선이 1인 행렬이다.</p>
+
+<p>대각선의 시작점은 <code class="language-plaintext highlighter-rouge">k</code>로 받는다.</p>
+
+<p><img src="/images/2020-11-18/3.png" alt="3" /></p>
+
+<p>이 때, <code class="language-plaintext highlighter-rouge">k</code>값은 음수 값으로도 선언 가능하다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">eye</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span> <span class="c1"># N은 row, M은 column, k는 대각선의 시작점
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">dtype</code>의 기본 값은 <code class="language-plaintext highlighter-rouge">float</code>이다.</p>
+
+<h2 id="diag">diag</h2>
+
+<p>대각 요소들로 이루어진 행렬을 추출한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">diag</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="c1"># k는 역시 대각선의 시작점
+</span></code></pre></div></div>
+
+<h2 id="random-sampling">random sampling</h2>
+
+<p>데이터 분포에 따른 sampling으로 array를 생성한다.</p>
+
+<p>일단 지금은 일단 알고 있기만 할 것.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">()</span> <span class="c1">#균등분포
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">normal</span><span class="p">()</span> <span class="c1">#정규분포
+</span></code></pre></div></div>
+
+<h1 id="calculation">calculation</h1>
+
+<h2 id="sum">sum</h2>
+
+<p>array의 메소드로 각 요소의 합을 반환한다.</p>
+
+<p>인자로 <code class="language-plaintext highlighter-rouge">dtype</code>을 받는다.</p>
+
+<h2 id="axis">axis</h2>
+
+<p>array의 모든 operation function을 실행할 때, 기준이 되는 dimension 축이다.</p>
+
+<p>axis = 0이면 row, axis = 1이면 column이다.</p>
+
+<p>즉 숫자가 높아질 수록 낮은 차원의 축을 의미한다.</p>
+
+<p><img src="/images/2020-11-18/1.png" alt="image1" /></p>
+
+<p>다음은 sum의 예제이다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">13</span><span class="p">).</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">test_array_1</span> <span class="o">=</span> <span class="n">test_array</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+<p>축의 수직을 합을 하는 것이 아니고 축 방향으로 합을 하는 것임을 주의해야 한다.</p>
+
+<p>이 경우 test_array_1은 <code class="language-plaintext highlighter-rouge">array([10, 26, 42])</code>가 된다.</p>
+
+<h1 id="concatenate">concatenate</h1>
+<p>행렬을 붙이는 메소드</p>
+
+<p>이 메소드들은 속도 면에서 그렇게 빠르지 않다.</p>
+
+<p>따라서 이 기능을 사용하고자 numpy를 사용할 필요는 없다.</p>
+
+<h2 id="vstack-hstack">vstack, hstack</h2>
+
+<p>numpy array를 수직 및 수평으로 합치는 함수이다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="n">np</span><span class="p">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>이럴 경우 <code class="language-plaintext highlighter-rouge">array([[1, 2, 3], [2, 3, 4]])</code>가 나오게 된다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">b</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>이 경우에는 <code class="language-plaintext highlighter-rouge">array([[1, 2], [2, 3], [3, 4]])</code>가 나오게 된다.</p>
+
+<h2 id="concatenate-1">concatenate</h2>
+<p>concatenate는 합칠 방향을 설정할 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
+<span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">),</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="c1"># [[1, 2, 3],
+#  [2, 3, 4]]
+</span></code></pre></div></div>
+
+<p>이 때, 주의해야할 것은 결과값에 차원을 미리 맞춰주어야 한다는 점이다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">[[1,2,3]]</code>처럼 2차원의 shape으로 선언해주어야 한다.</p>
+
+<p>그래서 이 경우에는 다음과 같이 reshape과 같은 메소드를 사용해 명시해주는 것이 조금 더 깔끔할 수 있다.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]).</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]).</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">),</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h1 id="operator">Operator</h1>
+
+<p><code class="language-plaintext highlighter-rouge">+</code>, <code class="language-plaintext highlighter-rouge">-</code>, <code class="language-plaintext highlighter-rouge">*</code>는 각 요소합, 요소차, 요소곱이다.</p>
+
+<p>곱은 dot이나 cross product가 아님을 주의해야 한다.</p>
+
+<p>요소곱의 경우에는 같은 shape인지 미리 확인을 해주는 기능이 있다.</p>
+
+<h2 id="dot-product">dot product</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test_a</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">test_b</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="broadcasting">broadcasting</h2>
+
+<p>shape이 다른 배열 간 연산을 지원하는 기능이다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test_a</span> <span class="o">+</span> <span class="mi">3</span>
+</code></pre></div></div>
+
+<p>이 경우에는 test_a에 모든 요소에 3을 더해주게 된다.</p>
+
+<p>덧셈말고도 <code class="language-plaintext highlighter-rouge">*</code>, <code class="language-plaintext highlighter-rouge">-</code>, 심지어는 <code class="language-plaintext highlighter-rouge">&gt;</code>와 같은 비교 연산도 가능하다.</p>
+
+<p>다음과 같은 형태로 많이 사용한다.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test_a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">).</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> 
+<span class="c1"># test_a = [[0,1,2],
+#           [3,4,5],
+#           [6,7,8]]
+</span>
+<span class="n">test_b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="c1"># test_b = [[0,1,2]]
+</span>
+<span class="n">test_c</span> <span class="o">=</span> <span class="n">test_a</span> <span class="o">+</span> <span class="n">test_b</span>
+<span class="c1">#test_c =[[ 0,  2,  4],
+#         [ 3,  5,  7],
+#         [ 6,  8, 10]]
+</span></code></pre></div></div>
+
+<p>이는 밑의 그림과 같은 형태로 덧셈이 이루어진다.</p>
+
+<p><img src="/images/2020-11-18/2.png" alt="image1" /></p>
+
+<h1 id="where">where</h1>
+<p>조건을 만족하는 원소를 찾는 함수이다.</p>
+
+<p>인수의 순서는 c언어의 삼항 연산자를 생각하면 편하다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test_a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">test_a</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">#각각 조건, 참일 때 값, 거짓일 때 값이다.
+# array([2, 2, 3])
+</span></code></pre></div></div>
+<p>where에 전달해준 변수에 맞게, 새로운 array를 생성하게 된다.</p>
+
+<p>하지만 보통은 다음과 같이 사용한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">test_a</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1"># array([2], dtype = ...)
+</span></code></pre></div></div>
+
+<p>이 경우에는 넘겨준 조건에 맞는 원소의 index들의 array를 반환한다.</p>
+
+<h1 id="argmax--argmin">argmax &amp; argmin</h1>
+
+<p>array내 최대값 또는 최소값의 index를 반환한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">78</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">np</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">np</span><span class="p">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="c1"># (5,0)
+</span></code></pre></div></div>
+
+<p>다음과 같이 axis기반으로 최대 값, 최소 값을 받을 수도 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">).</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="p">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="c1">#(array([3,3,3]),array([0,0,0,0]))
+</span></code></pre></div></div>
+
+<h1 id="boolean-index">boolean index</h1>
+
+<p>ndarray는 인덱스에 조건을 넣을 수도 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">15</span><span class="p">]</span>
+<span class="c1"># array([16 17 18 19 20 21 22 23 24 25 26 27 28 29])
+</span></code></pre></div></div>
+<p>이렇게 조건에 만족하는 원소들로 이루어진 새로운 array를 만들 수 있다.</p>
+
+<p>astype메소드로 다음과 같이 형변환을 할 수도 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mi">15</span>
+<span class="n">a</span><span class="p">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="c1"># array([0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1])
+</span></code></pre></div></div>
+
+<h1 id="fancy-index">fancy index</h1>
+
+<p>인덱스에 array를 넣어 새로운 array를 추출하는 방법이다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="nb">int</span><span class="p">)</span>
+<span class="n">a</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>
+<span class="c1"># array([2. 2. 4. 8. 6. 4.])
+</span></code></pre></div></div>
+<p>이와 같이 b의 각 원소들을 인덱스로 값을 참조해 새로운 array를 생성하게 된다.</p>
+
+<p>하지만 이 경우에는 착각하기 쉽기 때문에 다음과 같이 사용해주면 좋다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span><span class="p">.</span><span class="n">take</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>다음과 같이 matrix에서도 사용 가능하다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">]],</span> <span class="nb">float</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="nb">int</span><span class="p">)</span>
+<span class="n">a</span><span class="p">[</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">]</span>
+<span class="c1"># array([  1.,   4.,  16.,  16.,   4.])
+</span></code></pre></div></div>
+
+<p>인덱스로 넣는 array는 반드시 <code class="language-plaintext highlighter-rouge">int</code> 자료형이어야만 한다.</p>
+
+<h1 id="loadtxt--savetxt">loadtxt &amp; savetxt</h1>
+
+<p>Text type의 데이터를 읽고, 저장하는 기능이다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s">'[파일 명]'</span><span class="p">)</span> <span class="c1"># 파일 호출
+</span><span class="n">np</span><span class="p">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s">'[파일 명]'</span><span class="p">,</span> <span class="p">[</span><span class="n">array</span> <span class="n">명</span><span class="p">],</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s">','</span><span class="p">)</span><span class="c1"># 파일 저장
+</span></code></pre></div></div>
+:ET

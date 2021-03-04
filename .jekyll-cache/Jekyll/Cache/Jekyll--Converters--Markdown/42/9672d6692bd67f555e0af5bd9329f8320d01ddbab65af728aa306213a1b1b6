@@ -1,0 +1,245 @@
+I"�l<p>문제의 자세한 내용은 링크로 대신한다.</p>
+
+<p><a href="https://programmers.co.kr/learn/courses/30/lessons/1836#">문제 링크</a></p>
+
+<h1 id="풀이">풀이</h1>
+<p>이런 문제들은 기본적으로 좌표에 대한 이해와 구현, 그리고 탐색의 구현 이 두가지를 보통 요구한다.</p>
+
+<p>그러다 보니, 자연스레 코드가 길어지게 되고 시간을 많이 잡아먹게 된다.</p>
+
+<p>이 문제는 탐색보다는 좌표에 대한 내용이 조금 더 중점이 되는 문제였다.</p>
+
+<h2 id="좌표">좌표</h2>
+<p>보드 위에 같은 두 블럭을 없앨 수 있는가 없는가에 대한 함수를 구현해야 한다.</p>
+
+<p>같은 두 블럭이 없어지려면 경로 사이에 다른 블럭이나 장애물이 없어야 한다.</p>
+
+<p>또한 경로는 단 한번만 꺾을 수 있다.</p>
+
+<p>두 블럭이 수직 혹은 수평으로 같은 선상에 존재한다면 그리 어렵지 않다.</p>
+
+<p>두 블럭 사이에 직선 공간만 확인 하면 된다.</p>
+
+<p><img src="/images/2020-10-15/1.png" alt="image1" /></p>
+
+<p>문제가 되는 경우는 다음과 같이 두 블럭이 같은 선상에 없는 경우이다.</p>
+
+<p><img src="/images/2020-10-15/2.png" alt="image2" /></p>
+
+<p>이렇게 두 가지 경로를 확인해 주어야 한다.</p>
+
+<p>각 경로는 좌측에 있는 블록 기준으로 우방향 하방향 두 방향으로 구성되어 있다.</p>
+
+<p>다음과 같은 경우도 존재한다.</p>
+
+<p><img src="/images/2020-10-15/3.png" alt="image2" /></p>
+
+<p>우측에 존재하는 블록이 다른 블록보다 위에 있으면,</p>
+
+<p>확인해야 할 경로는 우측에 존재하는 블록 기준으로 좌방향 하방향 두 방향으로 구성되게 된다.</p>
+
+<p>즉 각 경로에 장애물이 있는지 없는 지를 판단하기 위해서는 좌, 우, 하 총 세방향의 움직임을 구현하면 된다.</p>
+
+<h2 id="탐색">탐색</h2>
+<p>어떤 순서로 블록을 없앨 것인가에 대한 문제이다.</p>
+
+<p>이 문제는 생각보다 쉽게 풀린다.</p>
+
+<p>알파벳 순으로 DFS를 사용했을때 가장 처음 발견되는 루트가 정답이다.</p>
+
+<p>루트가 발견됬을 때 다른 노드를 탐색하지 않아도 되므로 스택을 따로 구현하지 않아도 된다.</p>
+
+<p>처음에 맵에 존재하는 블록을 탐색하고 이를 벡터에 넣은 후 정렬하였다.</p>
+
+<p>그 후 벡터의 원소를 차례대로 보드 상에서 없앨 수 있는 지 확인한다.</p>
+
+<p>없앨 수 있으면 블록을 없애고 다시 벡터의 처음 원소로 돌아가 과정을 반복한다.</p>
+
+<p>만약 없앨 수 있는 원소가 없으면 <code class="language-plaintext highlighter-rouge">"IMPOSSIBLE"</code>을 리턴한다.</p>
+
+<h1 id="코드">코드</h1>
+
+<h2 id="탐색-1">탐색</h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">upper_block</span><span class="p">;</span>
+<span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">lower_block</span><span class="p">;</span>
+<span class="c1">//동일한 두 블록의 위치를 저장할 pair 구조체</span>
+
+<span class="kt">int</span> <span class="n">g_m</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">g_n</span><span class="p">;</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">board</span><span class="p">;</span>
+<span class="c1">//다루기 쉽게 하기 위해 전역변수로 선언</span>
+
+<span class="n">string</span> <span class="nf">solution</span><span class="p">(</span><span class="kt">int</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">ap_board</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="n">answer</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span>
+    <span class="n">g_m</span> <span class="o">=</span> <span class="n">m</span><span class="p">;</span>
+    <span class="n">g_n</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span>
+    <span class="n">board</span> <span class="o">=</span> <span class="n">ap_board</span><span class="p">;</span>
+    
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="n">alpha</span><span class="p">;</span>
+    <span class="c1">//보드 안에 있는 블록을 저장할 벡터 선언</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">g_m</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">g_n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="sc">'A'</span> <span class="o">&amp;&amp;</span> <span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="sc">'Z'</span><span class="p">){</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">find</span><span class="p">(</span><span class="n">alpha</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">alpha</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span> <span class="o">==</span> <span class="n">alpha</span><span class="p">.</span><span class="n">end</span><span class="p">()){</span>
+                    <span class="n">alpha</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]);</span>
+                <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                    <span class="k">continue</span><span class="p">;</span>
+                    <span class="c1">//같은 블록은 두개 존재 하므로 하나만 저장</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">sort</span><span class="p">(</span><span class="n">alpha</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">alpha</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+    <span class="c1">//보드 안에 블록을 알파벳 순으로 정렬</span>
+    
+    <span class="k">while</span><span class="p">(</span><span class="n">alpha</span><span class="p">.</span><span class="n">size</span><span class="p">()){</span>
+        <span class="kt">int</span> <span class="n">check</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">breakable</span><span class="p">(</span><span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">])){</span>
+                <span class="n">answer</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+                <span class="n">alpha</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">find</span><span class="p">(</span><span class="n">alpha</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">alpha</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">]));</span>
+                <span class="n">board</span><span class="p">[</span><span class="n">lower_block</span><span class="p">.</span><span class="n">first</span><span class="p">][</span><span class="n">lower_block</span><span class="p">.</span><span class="n">second</span><span class="p">]</span> <span class="o">=</span> <span class="sc">'.'</span><span class="p">;</span>
+                <span class="n">board</span><span class="p">[</span><span class="n">upper_block</span><span class="p">.</span><span class="n">first</span><span class="p">][</span><span class="n">upper_block</span><span class="p">.</span><span class="n">second</span><span class="p">]</span> <span class="o">=</span> <span class="sc">'.'</span><span class="p">;</span>
+                <span class="c1">//없어진 블록의 위치를 '.'으로 채움</span>
+                <span class="k">break</span><span class="p">;</span>
+                
+                <span class="c1">//블록이 제거 가능하면 해당 원소를 제거하고 스트링에 추가 </span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">alpha</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">check</span><span class="p">){</span>
+            <span class="k">return</span> <span class="s">"IMPOSSIBLE"</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c1">//벡터의 크기가 변하지 않았다는 것은 없앨 블록이 없다는 뜻</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>vector를 매개변수로 선언하면 주소로 넘겨 받아 내용물을 수정할 수 있을거라 생각했으나,</p>
+
+<p>실제로는 일반 변수처럼 수정이 되지 않았다.</p>
+
+<p>그래서 전역변수로 선언해서 사용했다.</p>
+
+<h2 id="장애물-확인">장애물 확인</h2>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">breakable</span><span class="p">(</span><span class="kt">char</span> <span class="n">alpha</span><span class="p">){</span>
+    <span class="kt">int</span> <span class="n">alphaNum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">g_m</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">g_n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">alpha</span><span class="p">){</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">alphaNum</span><span class="p">){</span>
+                    <span class="n">lower_block</span><span class="p">.</span><span class="n">first</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+                    <span class="n">lower_block</span><span class="p">.</span><span class="n">second</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+                    <span class="n">j</span> <span class="o">=</span> <span class="n">g_n</span><span class="p">;</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="n">g_m</span><span class="p">;</span>
+                <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                    <span class="n">upper_block</span><span class="p">.</span><span class="n">first</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+                    <span class="n">upper_block</span><span class="p">.</span><span class="n">second</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+                    <span class="n">alphaNum</span><span class="o">++</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">//매개변수로 받은 블록 값으로 블록들의 위치 탐색</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">lower_block</span><span class="p">.</span><span class="n">first</span> <span class="o">==</span> <span class="n">upper_block</span><span class="p">.</span><span class="n">first</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">upper_block</span><span class="p">.</span><span class="n">second</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">lower_block</span><span class="p">.</span><span class="n">second</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="n">lower_block</span><span class="p">.</span><span class="n">first</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">'.'</span><span class="p">){</span>
+                <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="c1">//두 블록이 수평선상에 있을 때 경로를 확인하는 코드</span>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">lower_block</span><span class="p">.</span><span class="n">second</span> <span class="o">==</span> <span class="n">upper_block</span><span class="p">.</span><span class="n">second</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">upper_block</span><span class="p">.</span><span class="n">first</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">lower_block</span><span class="p">.</span><span class="n">first</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">lower_block</span><span class="p">.</span><span class="n">second</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">'.'</span><span class="p">){</span>
+                <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+     <span class="c1">//두 블록이 수직선상에 있을 때 경로를 확인하는 코드</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span> 
+        <span class="k">return</span> <span class="n">one_curve</span><span class="p">();</span>
+        <span class="c1">//동일 선상에 없을 경우, 한번 꺾어야 하는 경우는 따로 함수로 구현</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">one_curve</span><span class="p">(){</span>
+    <span class="kt">int</span> <span class="n">direct_x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">direct_y</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">};</span>
+    <span class="c1">//각 좌,우,하 값에 대한 움직임 배열;</span>
+    <span class="kt">int</span> <span class="n">direction</span><span class="p">;</span>
+    <span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">temp_pos</span><span class="p">(</span><span class="n">upper_block</span><span class="p">);</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">upper_block</span><span class="p">.</span><span class="n">second</span> <span class="o">&gt;</span> <span class="n">lower_block</span><span class="p">.</span><span class="n">second</span><span class="p">){</span>
+        <span class="n">direction</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+        <span class="n">direction</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">//블록의 위치에 따라 수평방향을 결정</span>
+    
+    <span class="kt">int</span> <span class="n">dist</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">dist_index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">dist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span> <span class="n">abs</span><span class="p">(</span><span class="n">upper_block</span><span class="p">.</span><span class="n">second</span> <span class="o">-</span> <span class="n">lower_block</span><span class="p">.</span><span class="n">second</span><span class="p">);</span>
+    <span class="n">dist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">lower_block</span><span class="p">.</span><span class="n">first</span> <span class="o">-</span> <span class="n">upper_block</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
+    <span class="c1">//두 블록의 거리 계산</span>
+    
+    <span class="k">for</span><span class="p">(;</span><span class="n">dist_index</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">;</span> <span class="n">dist_index</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">dist_index</span><span class="p">]</span> <span class="o">-</span> <span class="n">dist_index</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">temp_pos</span><span class="p">.</span><span class="n">first</span> <span class="o">+=</span> <span class="n">direct_y</span><span class="p">[</span><span class="n">direction</span><span class="p">];</span>
+            <span class="n">temp_pos</span><span class="p">.</span><span class="n">second</span> <span class="o">+=</span> <span class="n">direct_x</span><span class="p">[</span><span class="n">direction</span><span class="p">];</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="n">temp_pos</span><span class="p">.</span><span class="n">first</span><span class="p">][</span><span class="n">temp_pos</span><span class="p">.</span><span class="n">second</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">'.'</span><span class="p">){</span>
+                <span class="k">goto</span> <span class="n">lable1</span><span class="p">;</span>
+                <span class="c1">//이 경로가 불가능할 시 다음 경로 탐색</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">direction</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="c1">//수직방향으로 방향변경</span>
+    <span class="p">}</span>
+    <span class="c1">//수평방향 이후 수직방향으로 이동하는 경로를 탐색</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="nl">lable1:</span>
+    <span class="n">temp_pos</span><span class="p">.</span><span class="n">first</span> <span class="o">=</span> <span class="n">upper_block</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
+    <span class="n">temp_pos</span><span class="p">.</span><span class="n">second</span> <span class="o">=</span> <span class="n">upper_block</span><span class="p">.</span><span class="n">second</span><span class="p">;</span>
+    <span class="n">direction</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    
+    <span class="k">for</span><span class="p">(</span><span class="n">dist_index</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">;</span><span class="n">dist_index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">dist_index</span><span class="o">--</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">dist_index</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">dist_index</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">temp_pos</span><span class="p">.</span><span class="n">first</span> <span class="o">+=</span> <span class="n">direct_y</span><span class="p">[</span><span class="n">direction</span><span class="p">];</span>
+            <span class="n">temp_pos</span><span class="p">.</span><span class="n">second</span> <span class="o">+=</span> <span class="n">direct_x</span><span class="p">[</span><span class="n">direction</span><span class="p">];</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="n">temp_pos</span><span class="p">.</span><span class="n">first</span><span class="p">][</span><span class="n">temp_pos</span><span class="p">.</span><span class="n">second</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">'.'</span><span class="p">){</span>
+                <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">upper_block</span><span class="p">.</span><span class="n">second</span> <span class="o">&gt;</span> <span class="n">lower_block</span><span class="p">.</span><span class="n">second</span><span class="p">){</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c1">//수평방향으로 방향 </span>
+    <span class="p">}</span>
+    <span class="c1">//수직 방향 이후 수평방향으로 이동하는 경로를 탐색</span>
+    
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h1 id="후기">후기</h1>
+<p>푸는 데 시간이 오래 걸리고 생각도 많이 했던 문제였다.</p>
+
+<p>아무래도 나는 코드양이 많은 문제에 약한 듯 하다.</p>
+
+<p>좌표는 기본적으로 생각할 게 많고 구현할 게 많아 시간이 오래 걸린다.</p>
+
+<p>멋드러지게 알고리즘 한방으로 되는 문제가 아니므로 푸는 시간을 줄이는 연습을 해야겠다.</p>
+
+<p>그리고 STL 컨테이너는 매개변수로 전달받을 시 주소 전달이 아니었다.</p>
+
+<p>함수내에서 수정을 한다고 수정이 되지 않으므로 반드시 이를 고려할 것.</p>
+
+<p>그리고 goto 문이나 전역변수 같은 금기시 되는 스킬들이 오히려 문맥을 보기 편하게 만들어준다.</p>
+
+<p>필요하다고 생각되면 코딩 문제에서는 사용하는 것이 좋다.</p>
+:ET

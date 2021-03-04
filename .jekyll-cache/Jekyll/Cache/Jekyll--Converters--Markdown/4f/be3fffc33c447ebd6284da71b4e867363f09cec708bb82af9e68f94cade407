@@ -1,0 +1,224 @@
+I"�&<h1 id="optimization">Optimization</h1>
+
+<h2 id="gradient-descent">Gradient Descent</h2>
+
+<ul>
+  <li>First-order iterative optimization algorithm for finding a local minimum of a differentiable function.</li>
+</ul>
+
+<h2 id="important-concepts-in-optimization">Important Concepts in Optimization</h2>
+
+<h3 id="generalization">Generalization</h3>
+
+<ul>
+  <li>How well the learned model will behave on unseen data.</li>
+  <li>학습 데이터 사이와 테스트 데이터 사이의 차이</li>
+</ul>
+
+<h3 id="underfitting-vs-overfitting">Underfitting vs. Overfitting</h3>
+
+<p><img src="/images/2021-02-03/26/Untitled.png" alt="Untitled.png" /></p>
+<h3 id="cross-validation">Cross-validation</h3>
+
+<ul>
+  <li>Cross-validation is a model validation technique for assessing how the model will generalize to an independent (test) data set.</li>
+  <li>로스 함수의 선택이나 레이어의 갯수 같은 하이퍼 파라미터를 비교할 때 사용한다.</li>
+  <li>테스트 데이타는 어떤 식으로든 학습에 사용해서는 안된다.</li>
+</ul>
+
+<h3 id="bias-and-variance">Bias and Variance</h3>
+
+<ul>
+  <li>비슷한 입력에 비슷한 출력을 가지는 것을 Variance가 낮다고 한다.</li>
+  <li>출력의 mean이 타켓보다 많이 클경우 bias가 크다고 한다.</li>
+  <li>We can derive that what we are minimizing(<strong>cost</strong>) can be decomposed into the three different parts: bias$^2$, variance, and noise.</li>
+</ul>
+
+<p><img src="/images/2021-02-03/26/Untitled%201.png" alt="Untitled%201.png" /></p>
+<ul>
+  <li>결과적으로 bias와 variance를 모두 낮출 수는 없으며 타협을 봐야 한다.</li>
+</ul>
+
+<h3 id="bootstrapping">Bootstrapping</h3>
+
+<ul>
+  <li>Bootstrapping is any test or metric that uses random sampling with replacement.</li>
+  <li>전체 데이터에서 임의의 샘플을 학습시킨 여러 모델을 가지고 일관성을 테스트하는 것</li>
+</ul>
+
+<h3 id="bagging-vs-boosting">Bagging vs. Boosting</h3>
+
+<ul>
+  <li><strong>Bagging</strong>(<strong>B</strong>oostrapping <strong>agg</strong>regat<strong>ing</strong>)</li>
+  <li>Multiple models are being trained with bootstrapping.</li>
+  <li>ex) Base classifiers are fitted on random subset where individual predictions are aggregated (votiong or averaging).</li>
+  <li>Boosting</li>
+  <li>It focuses on those specific training samples that are hard to classify.</li>
+  <li>a strong model is built by combining weak learners in sequence where each learner learns from the mistakes of the previous weak learner.</li>
+  <li>Boosting은 여러 개의 모델을 만들어 하나의 강한 모델을 만드는 방식이다.</li>
+</ul>
+
+<p><img src="/images/2021-02-03/26/Untitled%202.png" alt="Untitled%202.png" /></p>
+<h1 id="gradient-descent-methods">Gradient Descent Methods</h1>
+
+<ul>
+  <li>Stochastic Gradient Descent : update with the gradient computed from a single sample.</li>
+  <li>Mini-batch Gradient Descent : update with the gradient computed from a subset of data.</li>
+  <li>Batch Gradient Descent : update with the gradient computed from the whole data.</li>
+</ul>
+
+<h3 id="batch-size-matters">Batch-size Matters</h3>
+
+<p><img src="/images/2021-02-03/26/Untitled%203.png" alt="Untitled%203.png" /></p>
+<ul>
+  <li>batch 사이즈가 커지면 일반적으로 sharp minimum으로 모이는 경향이 있다.</li>
+  <li>반면에 batch 사이즈가 작으면 일관적으로 flat minimum으로 모이게 된다.</li>
+  <li>그래프에서 보다시피 오차가 생길 때 flat minimum이 오차가 더 적은 것을 알 수 있다.</li>
+</ul>
+
+<h2 id="gradient-descent-methods-1">Gradient Descent Methods</h2>
+
+<h3 id="gradient-descent-1">Gradient Descent</h3>
+
+<p><img src="/images/2021-02-03/26/Untitled%204.png" alt="Untitled%204.png" /></p>
+<h3 id="momentum">Momentum</h3>
+
+<p><img src="/images/2021-02-03/26/Untitled%205.png" alt="Untitled%205.png" /></p>
+<h3 id="nesterov-accelerated-gradient">Nesterov Accelerated Gradient</h3>
+
+<p><img src="/images/2021-02-03/26/Untitled%206.png" alt="Untitled%206.png" /></p>
+<h3 id="adagrad">Adagrad</h3>
+
+<ul>
+  <li><strong>Adagrad</strong> adapts the learning rate, performing larger updates for infrequent and smaller updates for frequent parameters.</li>
+</ul>
+
+<p><img src="/images/2021-02-03/26/Untitled%207.png" alt="Untitled%207.png" /></p>
+<ul>
+  <li>학습이 되면 될 수록 Learning rate가 줄어들어 학습이 되지 않게 된다.</li>
+</ul>
+
+<h3 id="adadelta">Adadelta</h3>
+
+<ul>
+  <li><strong>Adadelta</strong> extends Adagrad to reduce its monotonically decreasing the learning rate by restricting the accumulation window.</li>
+</ul>
+
+<p><img src="/images/2021-02-03/26/Untitled%208.png" alt="Untitled%208.png" /></p>
+<ul class="task-list">
+  <li>$0 \leq \gamma \leq 1$</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />EMA = Exponential Moving  Average</li>
+</ul>
+
+<h3 id="rmsprop">RMSprop</h3>
+
+<ul>
+  <li><strong>RMSprop</strong> is an unpublished, adaptive learning rate method proposed by Geoff Hinton in his lecture.</li>
+</ul>
+
+<p><img src="/images/2021-02-03/26/Untitled%209.png" alt="Untitled%209.png" /></p>
+<h3 id="adam">Adam</h3>
+
+<ul>
+  <li>Adaptive Moment Estimation(<strong>Adam</strong>) leverages both past gradients and squared gradients.</li>
+</ul>
+
+<p><img src="/images/2021-02-03/26/Untitled%2010.png" alt="Untitled%2010.png" /></p>
+<h2 id="regularization">Regularization</h2>
+
+<h3 id="early-stopping">Early Stopping</h3>
+
+<ul>
+  <li>학습을 시키다가 loss가 커지면 그 때 학습을 종료 시키는 것</li>
+  <li>Early Stopping를 위한 추가적인 validation data가 필요하다.</li>
+</ul>
+
+<h3 id="parameter-norm-penalty">Parameter Norm Penalty</h3>
+
+<ul>
+  <li>It adds smoothness to the function space.</li>
+</ul>
+
+<p><img src="/images/2021-02-03/26/Untitled%2011.png" alt="Untitled%2011.png" /></p>
+<ul>
+  <li>Weight가 작으면 함수가 smoother 해지고 그랬을 경우에는 Generalization 성능이 높다는 가정하에 이 방법을 사용한다.</li>
+</ul>
+
+<h3 id="data-augmentation">Data Augmentation</h3>
+
+<ul>
+  <li>More data are always welcomed.</li>
+  <li>However, in most cases, training data are given in advance.</li>
+  <li>In such cases we need data augmentation.</li>
+</ul>
+
+<p><img src="/images/2021-02-03/26/Untitled%2012.png" alt="Untitled%2012.png" /></p>
+<h3 id="noise-robustness">Noise Robustness</h3>
+
+<ul>
+  <li>add random noises inputs or weights.</li>
+</ul>
+
+<p><img src="/images/2021-02-03/26/Untitled%2013.png" alt="Untitled%2013.png" /></p>
+<h3 id="label-smoothing">Label Smoothing</h3>
+
+<ul>
+  <li><strong>Mix-up</strong> constructs augmented training exampes by mixing both input and output of two randomly selected training data.</li>
+  <li><strong>CutMix</strong> constructs augmented training exaples by mixing inputs with cut and paste and outputs with soft labels of two randomly selected training data.</li>
+</ul>
+
+<p><img src="/images/2021-02-03/26/Untitled%2014.png" alt="Untitled%2014.png" /></p>
+<h3 id="dropout">Dropout</h3>
+
+<ul>
+  <li>In each foward pss, randomly set some neurons to zero.</li>
+  <li>이는 모델을 robust 하게 만드는 효과가 있다.</li>
+</ul>
+
+<h3 id="batch-normalization">Batch Normalization</h3>
+
+<ul>
+  <li>Batch normalization compute the empirical mean and variance independently for each dimension (layers) and normalize.</li>
+  <li>There are different variances of normalizations.</li>
+</ul>
+
+<p><img src="/images/2021-02-03/26/Untitled%2015.png" alt="Untitled%2015.png" /></p>
+<h1 id="convolution-neural-network">Convolution Neural Network</h1>
+
+<ul>
+  <li>기존의 MLP의 경우에는 fully connected 구조이기 때문에 가중치가 몹시 커질 수 밖에 없는 구조였다.</li>
+  <li>Convolution 연산은 이와 달리 커널(kernel)을 입력벡터 상에서 움직여가면서 선형모델과 합성함수가 적용되는 구조이다.</li>
+</ul>
+
+<p><img src="/images/2021-02-03/26/Untitled%2016.png" alt="Untitled%2016.png" /></p>
+<ul>
+  <li>모든 i에 대해 적용되는 커널은 V로 같고 커널의 사이즈만큼 x 상에서 이동하면서 적용한다.</li>
+  <li>Convolution 연산의 수학적 의미는 신호를 커널을 이용해 국소적으로 증폭 또는 감소시켜 정보를 추출 또는 필터링 하는 것이다.</li>
+</ul>
+
+<p><img src="/images/2021-02-03/26/Untitled%2017.png" alt="Untitled%2017.png" />
+<img src="/images/2021-02-03/26/Untitled%2018.png" alt="Untitled%2018.png" /></p>
+<ul>
+  <li>CNN에서 사용되는 연산은 엄밀히 말하면 뺄셈이 아닌 덧셈이 사용되므로 cross-correlation이지만, 역사적으로 계속 Convolution이라 불렀으니 Counvolution이라 한다.</li>
+  <li>커널은 정의역 내에서 움직여도 변하지 않고(translation invariant) 주어진 신호에 국소적(local)으로 적용한다.</li>
+</ul>
+
+<h2 id="다양한-차원에서의-convolution">다양한 차원에서의 Convolution</h2>
+
+<p><img src="/images/2021-02-03/26/Untitled%2019.png" alt="Untitled%2019.png" />
+<img src="/images/2021-02-03/26/Untitled%2020.png" alt="Untitled%2020.png" />
+<img src="/images/2021-02-03/26/Untitled%2021.png" alt="Untitled%2021.png" /></p>
+<ul>
+  <li>3차원 Convolution의 경우에는 각 채널마다 커널이 존재한다. 그래서 각 채널에 해당하는 커널을 입력에 convolution을 해준 값을 전부 더하면 된다.</li>
+</ul>
+
+<p><img src="/images/2021-02-03/26/Untitled%2022.png" alt="Untitled%2022.png" />
+<img src="/images/2021-02-03/26/Untitled%2023.png" alt="Untitled%2023.png" /></p>
+<ul>
+  <li>출력을 3차원으로 만드려면 커널을 더 늘려주면 된다.</li>
+</ul>
+
+<h2 id="backpropagation-of-convolution">Backpropagation of Convolution</h2>
+
+<p><img src="/images/2021-02-03/26/Untitled%2024.png" alt="Untitled%2024.png" /></p>
+:ET

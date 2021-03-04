@@ -1,0 +1,437 @@
+I"�`<h1 id="groupby">Groupby</h1>
+
+<p><img src="/images/2021-01-28/23/1.png" alt="1.png" /></p>
+
+<ul>
+  <li>SQL groupby 명령어와 같다.</li>
+  <li>split → apply → combine</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'Team'</span><span class="p">)[</span><span class="s">'Points'</span><span class="p">].</span><span class="nb">sum</span><span class="p">()</span>
+<span class="s">'''
+Team
+Devils    1536
+Kings     3097
+Riders    3049
+Royals    1505
+Name: Points, dtype: int64
+'''</span>
+
+<span class="c1"># hierarchical index
+</span><span class="n">h_index</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">groupby</span><span class="p">([</span><span class="s">'Team'</span><span class="p">,</span><span class="s">'Year'</span><span class="p">])[</span><span class="s">'Points'</span><span class="p">].</span><span class="nb">sum</span><span class="p">()</span>
+<span class="s">'''
+Team    Year
+Devils  2014    863
+        2015    673
+Kings   2014    741
+        2015    812
+        2016    756
+        2017    788
+Riders  2014    876
+        2015    789
+        2016    694
+        2017    690
+Royals  2014    701
+        2015    804
+Name: Points, dtype: int64
+'''</span>
+
+<span class="n">h_index</span><span class="p">.</span><span class="n">unstack</span><span class="p">()</span>
+<span class="s">'''
+Year	2014	2015	2016	2017
+Team				
+Devils	863.0	673.0	NaN	NaN
+Kings	741.0	812.0	756.0	788.0
+Riders	876.0	789.0	694.0	690.0
+Royals	701.0	804.0	NaN	NaN
+'''</span>
+
+<span class="n">h_index</span><span class="p">.</span><span class="n">reset_index</span><span class="p">()</span> <span class="c1"># 인덱스 다시 붙여주기
+</span><span class="s">'''
+Team	Year	Points
+0	Devils	2014	863
+1	Devils	2015	673
+2	Kings	2014	741
+3	Kings	2015	812
+4	Kings	2016	756
+5	Kings	2017	788
+6	Riders	2014	876
+7	Riders	2015	789
+8	Riders	2016	694
+9	Riders	2017	690
+10	Royals	2014	701
+11	Royals	2015	804
+'''</span>
+
+<span class="n">h_index</span><span class="p">.</span><span class="n">swaplevel</span><span class="p">()</span>
+<span class="s">'''
+Year  Team  
+2014  Devils    863
+2015  Devils    673
+2014  Kings     741
+2015  Kings     812
+2016  Kings     756
+2017  Kings     788
+2014  Riders    876
+2015  Riders    789
+2016  Riders    694
+2017  Riders    690
+2014  Royals    701
+2015  Royals    804
+Name: Points, dtype: int64
+'''</span>
+
+<span class="c1"># 정렬 메소드
+</span><span class="n">h_index</span><span class="p">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># level은 기준으로 할 인덱스를 결정
+</span><span class="n">h_index</span><span class="p">.</span><span class="n">sort_values</span><span class="p">()</span> <span class="c1"># 값을 기준으로 정렬
+</span>
+<span class="c1"># groupby된 객체는 시리즈이므로 시리즈 메소드 사용 가능
+</span><span class="n">h_index</span><span class="p">.</span><span class="n">std</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="s">'''
+Year
+2014    87.439026
+2015    65.035888
+2016    43.840620
+2017    69.296465
+Name: Points, dtype: float64
+'''</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Groupby에 의해 Split된 상태를 추출 가능함</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'Team'</span><span class="p">)</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">grouped</span><span class="p">)</span> <span class="c1"># 이 때 grouped는 제네레이터이다.
+</span><span class="s">'''
+[('Devils',
+       Team  Rank  Year  Points
+  2  Devils     2  2014     863
+  3  Devils     3  2015     673),
+ ('Kings',
+      Team  Rank  Year  Points
+  4  Kings     3  2014     741
+  5  Kings     4  2015     812
+  6  Kings     1  2016     756
+  7  Kings     1  2017     788),
+ ('Riders',
+        Team  Rank  Year  Points
+  0   Riders     1  2014     876
+  1   Riders     2  2015     789
+  8   Riders     2  2016     694
+  11  Riders     2  2017     690),
+ ('Royals',
+        Team  Rank  Year  Points
+  9   Royals     4  2014     701
+  10  Royals     1  2015     804)]
+'''</span>
+<span class="c1"># 이때 list안에 튜플은 ([Teams], [데이타프레임])의 형태이다.
+</span>
+<span class="n">grouped</span><span class="p">.</span><span class="n">get_group</span><span class="p">(</span><span class="s">'Royals'</span><span class="p">)</span>
+<span class="c1"># grouped에서 그룹된 특정 데이타프레임 가져오기
+</span></code></pre></div></div>
+
+<h2 id="aggregation">aggregation</h2>
+
+<ul>
+  <li>그룹별로 연산을 적용해 데이터 프레임을 반환</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">grouped</span><span class="p">.</span><span class="n">agg</span><span class="p">(</span><span class="nb">sum</span><span class="p">)</span>
+<span class="s">'''
+     Rank	Year	Points
+Team			
+Devils	5	4029	1536
+Kings	9	8062	3097
+Riders	7	8062	3049
+Royals	5	4029	1505
+'''</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">grouped</span><span class="p">.</span><span class="n">agg</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">)</span>
+<span class="s">'''
+        Rank	Year	Points
+Team			
+Devils	2.50	2014.5	768.00
+Kings	2.25	2015.5	774.25
+Riders	1.75	2015.5	762.25
+Royals	2.50	2014.5	752.50
+'''</span>
+
+<span class="n">grouped</span><span class="p">[</span><span class="s">'Points'</span><span class="p">].</span><span class="n">agg</span><span class="p">([</span><span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">std</span><span class="p">])</span>
+<span class="s">'''
+            mean	sum	std
+Team			
+Devils	768.00	1536	134.350288
+Kings	774.25	3097	31.899582
+Riders	762.25	3049	88.567771
+Royals	752.50	1505	72.831998
+'''</span>
+</code></pre></div></div>
+
+<h2 id="transformation">Transformation</h2>
+
+<ul>
+  <li>그룹별로 연산을 할 수 있게 해준다</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">score</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="nb">max</span><span class="p">()</span>
+<span class="n">groubed</span><span class="p">.</span><span class="n">transform</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+<span class="s">'''
+  Rank	Year	Points
+0	2	2017	876
+1	2	2017	876
+2	3	2015	863
+3	3	2015	863
+4	4	2017	812
+5	4	2017	812
+6	4	2017	812
+7	4	2017	812
+8	2	2017	876
+9	4	2015	804
+10	4	2015	804
+11	2	2017	876
+'''</span>
+<span class="c1"># 그룹된 상태에서 각 column에 함수를 적용함
+</span></code></pre></div></div>
+
+<h2 id="filter">Filter</h2>
+
+<ul>
+  <li>특정 조건으로 데이터를 검색할 때 사용</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'Teams'</span><span class="p">).</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">)</span>
+<span class="s">'''
+  Team	Rank	Year	Points
+0	Riders	1	2014	876
+1	Riders	2	2015	789
+4	Kings	3	2014	741
+5	Kings	4	2015	812
+6	Kings	1	2016	756
+7	Kings	1	2017	788
+8	Riders	2	2016	694
+11	Riders	2	2017	690
+'''</span>
+<span class="n">df</span><span class="p">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'Team'</span><span class="p">).</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s">'Points'</span><span class="p">].</span><span class="n">mean</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">770</span><span class="p">)</span>
+<span class="s">'''
+   Team	Rank	Year	Points
+4	Kings	3	2014	741
+5	Kings	4	2015	812
+6	Kings	1	2016	756
+7	Kings	1	2017	788
+'''</span>
+</code></pre></div></div>
+
+<h1 id="pivot-table">Pivot Table</h1>
+
+<ul>
+  <li>우리가 엑셀에서 사용하던 그 것이다.</li>
+  <li>index 축은 groupby와 동일</li>
+  <li>column에 labeling을 추가해 aggregation을 하는것</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df_phone</span><span class="p">.</span><span class="n">pivot_table</span><span class="p">([</span><span class="s">'duration'</span><span class="p">],</span>
+                      <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">df_phone</span><span class="p">.</span><span class="n">month</span><span class="p">,</span> <span class="n">df_phone</span><span class="p">.</span><span class="n">item</span><span class="p">],</span>
+                      <span class="n">columns</span><span class="o">=</span><span class="n">df_phone</span><span class="p">.</span><span class="n">network</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s">'sum'</span><span class="p">,</span>
+                      <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-28/23/2.png" alt="2.png" /></p>
+
+<h2 id="crosstab">Crosstab</h2>
+
+<ul>
+  <li>두 칼럼에 교차 빈도, 비율, 덧셈 등을 구할 때 사용</li>
+  <li>Pivot table의 특수한 형태이다.</li>
+  <li>User_Item Rating Matrix 등을 만들 때 사용가능함</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pd</span><span class="p">.</span><span class="n">crosstab</span><span class="p">(</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">df_phone</span><span class="p">.</span><span class="n">month</span><span class="p">,</span> <span class="n">df_phone</span><span class="p">.</span><span class="n">item</span><span class="p">],</span>
+    <span class="n">columns</span><span class="o">=</span><span class="n">df_phone</span><span class="p">.</span><span class="n">network</span><span class="p">,</span>
+    <span class="n">values</span><span class="o">=</span><span class="n">df_phone</span><span class="p">.</span><span class="n">duration</span><span class="p">,</span>
+    <span class="n">aggfunc</span><span class="o">=</span><span class="s">'sum'</span>
+<span class="p">).</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-28/23/3.png" alt="3.png" /></p>
+
+<h1 id="merge--concat">Merge &amp; Concat</h1>
+
+<h2 id="merge">Merge</h2>
+
+<ul>
+  <li>SQL에서 많이 사용하는 Merege와 같은 기능</li>
+  <li>두 개의 데이터를 하나로 합침</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pd</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_a</span><span class="p">,</span> <span class="n">df_b</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s">'subject_id'</span><span class="p">)</span>
+<span class="c1"># on에는 공통 인덱스
+</span>
+<span class="n">pd</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_a</span><span class="p">,</span> <span class="n">df_b</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s">'left_id'</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s">'right_id'</span><span class="p">)</span>
+<span class="c1"># 기준으로 할 인덱스의 이름이 다르면
+# left_on, right_on에 각 인덱스 이름을 넘겨준다.
+</span></code></pre></div></div>
+
+<h2 id="join-method">join method</h2>
+
+<p><img src="/images/2021-01-28/23/4.png" alt="4.png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pd</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_a</span><span class="p">,</span> <span class="n">df_b</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s">'subject_id'</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s">'inner'</span><span class="p">)</span>
+<span class="s">'''
+디폴트 join이다.
+공통 인덱스가 존재하는 값만 join한다.
+'''</span>
+<span class="n">pd</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_a</span><span class="p">,</span> <span class="n">df_b</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s">'subject_id'</span> <span class="n">how</span><span class="o">=</span><span class="s">'left'</span><span class="p">)</span>
+<span class="s">'''
+left join 또는 right join이다.
+각 왼쪽 오른쪽 테이블의 인덱스를 기준으로 join한다.
+인덱스에 해당하는 값이 없으면 NaN을 채워준다.
+'''</span>
+<span class="n">pd</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_a</span><span class="p">,</span> <span class="n">df_b</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s">'subject_id'</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s">'outer'</span><span class="p">)</span>
+<span class="s">'''
+모든 값을 join한다. 없는 값은 NaN으로 채운다.
+'''</span>
+<span class="n">pd</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_a</span><span class="p">,</span> <span class="n">df_b</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="s">'''
+데이터 프레임 저장 순서를 기준으로 하는 merge이다.
+이렇게 하면 왼쪽 오른쪽 인덱스가 모두 살아있게 된다.
+'''</span>
+</code></pre></div></div>
+
+<h2 id="concat">Concat</h2>
+
+<ul>
+  <li>같은 형태의 데이터프레임을 붙이는 함수</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pd</span><span class="p">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_a</span><span class="p">,</span> <span class="n">df_b</span><span class="p">])</span>
+
+<span class="n">df_a</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">df_b</span><span class="p">)</span>
+<span class="s">'''
+concat와 같은 기능을 한다.
+이때 주의해야 할 점은 두 데이터프레임의 
+column이 같아야 한다는 것이다.
+'''</span>
+
+<span class="n">pd</span><span class="p">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_a</span><span class="p">,</span> <span class="n">df_b</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="s">'''
+원하는 축방향으로도 붙일 수 있다.
+'''</span>
+</code></pre></div></div>
+
+<h2 id="db-불러오기">DB 불러오기</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="p">.</span><span class="n">connect</span><span class="p">([</span><span class="n">db</span> <span class="n">주소</span><span class="p">])</span>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="n">cur</span><span class="p">.</span><span class="n">excute</span><span class="p">([</span><span class="n">쿼리</span> <span class="n">문</span><span class="p">])</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">cur</span><span class="p">.</span><span class="n">fetchall</span><span class="p">()</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_spl_query</span><span class="p">([</span><span class="n">쿼리</span> <span class="n">문</span><span class="p">],</span> <span class="n">conn</span><span class="p">)</span>
+<span class="c1"># db에서 가져온 데이터로 데이터프레임 생성
+</span></code></pre></div></div>
+
+<h2 id="xls-persistence">XLS persistence</h2>
+
+<ul>
+  <li>Xls엔진으로 openpyxls 또는 XlsxWrite 사용(설치해야되는 모듈)</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">writer</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">ExcelWriter</span><span class="p">([</span><span class="n">저장할</span> <span class="n">xlsx</span> <span class="n">이름</span> <span class="n">및</span> <span class="n">주소</span><span class="p">],</span>
+                        <span class="n">engine</span> <span class="o">=</span> <span class="s">'xlsxwriter'</span><span class="p">)</span>
+<span class="n">df_routes</span><span class="p">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">sheet_name</span> <span class="o">=</span> <span class="s">'Sheet1'</span><span class="p">)</span>
+
+<span class="n">pd</span><span class="p">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s">'파일명'</span><span class="p">)</span>
+<span class="c1"># 엑셀에서 파일 읽어오기
+</span></code></pre></div></div>
+
+<h2 id="pickle-persistence">Pickle persistence</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">to_pickle</span><span class="p">([</span><span class="n">저장할</span> <span class="n">pickle</span> <span class="n">이름</span> <span class="n">및</span> <span class="n">주소</span><span class="p">])</span>
+<span class="c1"># 저장
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_pickle</span><span class="p">([</span><span class="n">pickle</span> <span class="n">주소</span><span class="p">])</span>
+<span class="c1"># 읽어오기
+</span></code></pre></div></div>
+
+<h1 id="확률론-맛보기">확률론 맛보기</h1>
+
+<ul>
+  <li>딥러닝은 <strong>확률론 기반의 기계학습 이론</strong>에 바탕을 두고 있다.</li>
+  <li>기계학습에서 사용되는 손실함수들의 작동원리는 데이터 공간을 통계적으로 해석해서 유도한다.</li>
+  <li>회귀 분석에서 손실함수로 사용되는 L-2노름은 <strong>예측오차의 분산을 가장 최소화하는 방향으로 학습하도록 유도</strong>한다<strong>.</strong></li>
+  <li>분류 문제에서 사용되는 <strong>교차 엔트로피(corss-entropy)</strong>는 <strong>모델 예측의 불확실성을 최소화하는 방향으로 학습하도록 유도</strong>한다.</li>
+  <li>분산 및 불확실성을 <strong>최소화하기 위해서는 측정하는 방법</strong>을 알아야 한다.</li>
+</ul>
+
+<h2 id="확률-분포">확률 분포</h2>
+
+<ul>
+  <li>데이터 공간을 $\mathscr X * \mathscr Y$라 표기하고 $\mathscr D$는 데이터공간에서 데이터를 추출하는 분포이다.</li>
+  <li>데이터는 확률변수로 $(x,y)\sim\mathscr D$라 표기한다.</li>
+  <li>결합분포 $P(x, y)$는  $\mathscr D$를 모델링한다.</li>
+  <li>$P(X)$는 입력 $x$에 대한 <strong>주변확률분포</strong>이며 $y$에 대한 정보를 주진 않는다.</li>
+  <li>다음과 같은 방법으로 주변확률분포를 구할 수 있다.</li>
+</ul>
+
+<p><img src="/images/2021-01-28/23/5.png" alt="5.png" /></p>
+
+<ul>
+  <li><strong>조건부확률분포</strong> $P(x\mid y)$는 데이터 공간에서 입력 $x$와 출력 $y$ 사이의 관계를 모델링한다.</li>
+</ul>
+
+<h2 id="이산확률변수-vs-연속확률변수">이산확률변수 vs 연속확률변수</h2>
+
+<ul>
+  <li>확률 변수는 확률분포 $\mathscr D$에 따라 <strong>이산형(discrete)</strong>과 <strong>연속형(continuous)</strong>확률변수로 구분하게 된다.</li>
+</ul>
+
+<p><img src="/images/2021-01-28/23/6.png" alt="6.png" /></p>
+
+<ul>
+  <li>모든 확률 변수가 이 두가지로 구분되는 것은 아니다.</li>
+</ul>
+
+<h2 id="조건부확률과-기계학습">조건부확률과 기계학습</h2>
+
+<ul>
+  <li>조건부확률 $P(y\mid x)$는 입력변수 $x$에 대해 정답이 $y$일 확률을 의미한다.</li>
+  <li>로지스틱 회귀에서 사용했던 선형모델과 소프트맥스 함수의 결합은 <strong>데이터에서 추출된 패턴을 기반으로 확률을 해석</strong>하는데 사용된다.</li>
+  <li>분류 문제에서 $softmax(W\phi + b)$는 데이터 $x$로부터 추출된 특징패턴$\phi(x)$와 가중치행렬 $W$를 통해 조건부확률 $P(y\mid x)$를 계산한다.</li>
+  <li>회귀 문제의 경우 조건부기대값 $\mathbb E[y\mid x]$를 추정한다.</li>
+</ul>
+
+<p><img src="/images/2021-01-28/23/7.png" alt="7.png" /></p>
+
+<ul>
+  <li>조건부기대값은 <strong>$\mathbb E|y - f(x)|_2$을 최소화하는 함수 $f(x)$와 일치</strong>한다.</li>
+  <li>딥러닝은 다층신경망을 사용하여 데이터로부터 특징패턴 $\phi$를 추출한다.</li>
+  <li>특징패턴을 학습하기 위해 어떤 손실함수를 사용할지는 기계학습 문제와 모델에 의해 결정된다.</li>
+</ul>
+
+<h2 id="기대값">기대값</h2>
+
+<ul>
+  <li>확률분포가 주어지면 데이터를 분석하는 데 사용 가능한 여러 종류의 <strong>통계적 범함수(statistical functional)를 계산</strong>할 수 있다.</li>
+  <li><strong>기대값(expectation)은 데이터를 대표하는 통계량</strong>이면서 동시에 확률분포를 통해 다른 통계적 범함수를 계산하는데 사용</li>
+</ul>
+
+<p><img src="/images/2021-01-28/23/8.png" alt="8.png" /></p>
+
+<ul>
+  <li>기대값을 이용해 분산, 첨도, 공분산 등 여러 통계량을 계산할 수 있다.</li>
+</ul>
+
+<h2 id="몬테카를로-샘플링">몬테카를로 샘플링</h2>
+
+<ul>
+  <li>기계학습의 많은 문제들은 확률분포를 명시적으로 모를 때가 대부분이다.</li>
+  <li>확률분포를 모를 때 <strong>데이터를 이용해 기대값을 계산하려면 몬테카를로(Monte Carlo)샘플링 방법</strong>을 사용한다.</li>
+  <li>몬테카를로는 이산형이든 연속형이든 상관없이 성립한다.</li>
+  <li>샘플링된 데이터를 목적함수에 대입하고 산술평균을 계산해주면 우리가 구하려는 기대값에 근사하게 된다.</li>
+</ul>
+
+<p><img src="/images/2021-01-28/23/9.png" alt="9.png" /></p>
+:ET

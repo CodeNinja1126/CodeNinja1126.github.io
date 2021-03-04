@@ -1,0 +1,544 @@
+I"�<h1 id="file--exception--log-handling">File / Exception / Log Handling</h1>
+
+<h2 id="exception">Exception</h2>
+
+<p>예외 처리 문법, 버그같은 예상치 못한 경우에 대비하기 위한 문법이다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span>
+    <span class="n">예외</span> <span class="n">발생</span> <span class="n">가능</span> <span class="n">코드</span>
+<span class="k">except</span> <span class="o">&lt;</span><span class="nb">Exception</span> <span class="n">Type</span><span class="o">&gt;</span><span class="p">:</span>
+    <span class="n">예외</span> <span class="n">발생시</span> <span class="n">대응하는</span> <span class="n">코드</span>
+
+<span class="c1"># if 문으로도 대체 가능하다.
+</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="mi">10</span><span class="o">//</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">ZeroDivisionError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Zero Division!"</span><span class="p">)</span>
+<span class="s">'''
+Zero Division!
+10
+5
+...
+1
+1
+'''</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="mi">10</span><span class="o">//</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">ZeroDivisionError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Zero Division!"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span> <span class="c1"># 에러 전체를 잡는다. 권장하진 않음
+</span>        <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="s">'''
+Zero Division!
+1 10
+2 5
+3 3
+4 2
+list index out of range
+list index out of range
+list index out of range
+list index out of range
+list index out of range
+'''</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">10</span><span class="o">//</span><span class="n">i</span>
+    <span class="k">except</span> <span class="nb">ZeroDivisionError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Zero Division!"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="c1"># else를 사용해 에러가 발생하지 않았을 때 코드를 작성할 수 있다.
+</span>    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'-----------'</span><span class="p">)</span>
+    <span class="c1"># finally를 사용하면 에러가 발생하든 안하든 수행된다.
+</span><span class="s">'''
+Zero Division!
+-----------
+10
+-----------
+5
+-----------
+...
+-----------
+1
+-----------
+1
+-----------
+1
+-----------
+'''</span>
+</code></pre></div></div>
+
+<h3 id="raise">raise</h3>
+
+<p>필요에 따라 강제로 Exception을 발생시킨다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">raise</span> <span class="o">&lt;</span><span class="nb">Exception</span> <span class="n">Type</span><span class="o">&gt;</span><span class="p">(</span><span class="n">예외정보</span><span class="p">)</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"변환할 정수 값을 입력해주세요"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">digit</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">digit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s">'0123456789'</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">'숫자를 입력하지 않았습니다.'</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'정수값으로 변환된 숫자 -'</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+<span class="s">'''
+변환할 정수 값을 입력해주세요a
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+&lt;ipython-input-10-3cb00cad79f4&gt; in &lt;module&gt;
+      3     for digit in value:
+      4         if digit not in '0123456789':
+----&gt; 5             raise ValueError('숫자를 입력하지 않았습니다.')
+      6     print('정수값으로 변환된 숫자 -', int(value))
+
+ValueError: 숫자를 입력하지 않았습니다.
+'''</span>
+</code></pre></div></div>
+
+<h3 id="assert">assert</h3>
+
+<p>조건에 따라 에러를 발생시킨다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">assert</span> <span class="o">&lt;</span><span class="n">예외</span> <span class="n">조건</span><span class="o">&gt;</span>
+
+<span class="k">def</span> <span class="nf">get_binary_number</span><span class="p">(</span><span class="n">decimal_number</span> <span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decimal_number</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">bin</span><span class="p">(</span><span class="n">decimal_number</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">get_binary_number</span><span class="p">(</span><span class="mf">10.0</span><span class="p">))</span>
+<span class="s">'''
+---------------------------------------------------------------------------
+AssertionError                            Traceback (most recent call last)
+&lt;ipython-input-1-199c06572b76&gt; in &lt;module&gt;
+      3     return bin(decimal_number)
+      4 
+----&gt; 5 print(get_binary_number(10.0))
+
+&lt;ipython-input-1-199c06572b76&gt; in get_binary_number(decimal_number)
+      1 def get_binary_number(decimal_number : int):
+----&gt; 2     assert isinstance(decimal_number, int)
+      3     return bin(decimal_number)
+      4 
+      5 print(get_binary_number(10.0))
+
+AssertionError:
+'''</span>
+</code></pre></div></div>
+
+<h2 id="file-handling">File handling</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#==================
+# 파일 읽기
+</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'[파일의 경로]'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="c1"># r이 읽기 모드
+</span><span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c1"># 파일을 읽어온다 파일을 다 쓰면 close()함수를 사용한다.
+</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(...)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+<span class="c1"># block 에서만 파일을 사용하고 block이 끝나면 파일을 닫는다.
+</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(...)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">readlines</span><span class="p">()</span>
+<span class="c1"># 파일을 한 줄단위로 읽어와, 리스트 형태로 반환한다.
+</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(...)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+            <span class="k">break</span>
+<span class="c1"># 파일을 한 줄씩 읽는다.
+</span>
+<span class="c1">#==================
+# 파일 쓰기
+</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'[파일의 경로]'</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">'w'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf8'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="s">"%d번째 줄입니다. </span><span class="se">\n</span><span class="s">"</span> <span class="o">%</span> <span class="n">i</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c1"># w는 덮어쓰기 모드
+</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'[파일의 경로]'</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">'a'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf8'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="s">"%d번째 줄입니다. </span><span class="se">\n</span><span class="s">"</span> <span class="o">%</span> <span class="n">i</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c1"># a는 파일에 뒤에 이어서 추가한다.
+</span></code></pre></div></div>
+
+<h2 id="디렉토리-다루기">디렉토리 다루기</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="p">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s">'[디렉토리 명]'</span><span class="p">)</span>
+<span class="c1"># 디렉토리 만들기
+</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">isdir</span><span class="p">(</span><span class="s">'[디렉토리 명]'</span><span class="p">):</span>
+    <span class="n">os</span><span class="p">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s">'[디렉토리명]'</span><span class="p">)</span>
+<span class="c1"># 디렉토리 존재 확인
+</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">os</span><span class="p">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s">'[디렉토리 명]'</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">FileExistsError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Already created'</span><span class="p">)</span>
+<span class="c1"># 디렉토리가 이미 존재하면 FileExistsError 에러 발생
+</span>
+<span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="s">'[파일 혹은 디렉토리 명]'</span><span class="p">)</span>
+<span class="c1"># 파일 혹은 디렉토리 존재 확인
+</span>
+<span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">'[파일 명]'</span><span class="p">)</span>
+<span class="c1"># 파일 존재 확인
+</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="n">source</span> <span class="o">=</span> <span class="s">'[복사할 파일]'</span>
+<span class="n">dest</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">'[경로]'</span><span class="p">,</span> <span class="s">'[파일명]'</span><span class="p">)</span>
+<span class="c1"># os마다 경로 구분 기호가 다르기 때문에 join 권장
+</span>
+<span class="n">shutil</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">source</span><span class="p">.</span> <span class="n">dest</span><span class="p">)</span>
+<span class="c1"># 파일 복사
+</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+
+<span class="n">cwd</span> <span class="o">=</span> <span class="n">pathlib</span><span class="p">.</span><span class="n">Path</span><span class="p">.</span><span class="n">cwd</span><span class="p">()</span>
+<span class="c1"># 현재 작업 디렉토리 반환
+</span>
+<span class="n">cwd</span><span class="p">.</span><span class="n">parent</span>
+<span class="c1"># 현재 작업 디렉토리의 부모 경로 반환
+</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">cwd</span><span class="p">.</span><span class="n">parents</span><span class="p">)</span>
+<span class="c1"># 부모 디렉토리들을 list로 반환
+</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">cwd</span><span class="p">.</span><span class="n">glob</span><span class="p">(</span><span class="s">'*'</span><span class="p">))</span>
+<span class="c1"># 현재 디렉토리에서 이름을 검색해서 디렉토리를 list로 반환
+# 'co*', '*mm*', '*.py' 등 이름 일부로 검색할 수 도 있다.
+</span></code></pre></div></div>
+
+<p>이런 류의 함수는 워낙 많기 때문에 하나하나 찾아보며 사용해야 한다.</p>
+
+<h2 id="pickle">Pickle</h2>
+
+<p>파이썬의 객체를 영속화(persistence)하는 buil-in 객체, 데이터, object 등 실행 중 정보를 저장하고 불러와서 사용한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pickle</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'[파일 명]'</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">pickle</span><span class="p">.</span><span class="n">dump</span><span class="p">(</span><span class="n">li</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+<span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c1"># 피클 생성
+</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'[파일 명]'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">pickle</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c1"># 피클 읽어오기
+</span></code></pre></div></div>
+
+<h2 id="logging">logging</h2>
+
+<p>프로그램이 실행되는 동안 일어나는 정보의 기록을 남기는 것이다. 유저의 접근, 프로그램의 Exception, 특정 함수의 사용과 같은 정보를 저장한다. 기록된 로그를 분석하면 의미있는 결과를 도출할 수 있다.</p>
+
+<p><img src="/images/2021-01-22/1.png" alt="1.png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">'main'</span><span class="p">)</span>
+<span class="n">logging</span><span class="p">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">logger</span><span class="p">.</span><span class="n">setlevel</span><span class="p">(</span><span class="n">logging</span><span class="p">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="c1"># loggin level 설정, 어느 레벨부터 로그를 띄울 것인가
+</span>
+<span class="n">steam_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="n">FileHandler</span><span class="p">(</span>
+    <span class="s">'my.log'</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">'w'</span><span class="p">,</span> <span class="n">enconding</span><span class="o">=</span><span class="s">'utf8'</span><span class="p">)</span>
+<span class="n">logger</span><span class="p">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">steam_handler</span><span class="p">)</span>
+<span class="c1"># log 파일 설정
+</span>
+<span class="n">logging</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">"틀렸잖아!"</span><span class="p">)</span>
+<span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"확인해"</span><span class="p">)</span>
+<span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="s">"조심해!"</span><span class="p">)</span>
+<span class="n">logging</span><span class="p">.</span><span class="n">error</span><span class="p">(</span><span class="s">"에러났어!!!"</span><span class="p">)</span>
+<span class="n">logging</span><span class="p">.</span><span class="n">critical</span> <span class="p">(</span><span class="s">"망했다..."</span><span class="p">)</span>
+
+<span class="n">formatter</span> <span class="o">==</span> <span class="n">logging</span><span class="p">.</span><span class="n">Formater</span><span class="p">(</span><span class="s">'%(asctime)s %(levelname)s %(process)d %(message)s'</span><span class="p">)</span>
+<span class="c1"># 로그의 포맷 설정
+</span></code></pre></div></div>
+
+<h2 id="configparser">configparser</h2>
+
+<p>프로그램의 실행 설정을 file에 저장한다. section, key, value 값의 형태로 설정된 설정 파일을 사용하며 설정 파일을 dict type으로 호출 후 사용한다.</p>
+
+<p><img src="/images/2021-01-22/2.png" alt="2.png" /></p>
+
+<h2 id="algparser">algparser</h2>
+
+<p>console 창에서 프로그램 실행 시 setting 정보를 저장한다. 거의 모든 console 기반 python 프로그램들이 기본으로 제공 한다. 일반적으로는 argparse를 사용한다. command-line option이라고도 부름</p>
+
+<p><img src="/images/2021-01-22/3.png" alt="3.png" /></p>
+
+<h1 id="python-data-handling">Python Data Handling</h1>
+
+<ul>
+  <li><a href="https://www.data.go.kr">https://www.data.go.kr</a>에 들어가면 여러 공공 데이터를 받을 수 있다.</li>
+</ul>
+
+<h2 id="csvcomma-seperate-value">CSV(comma seperate value)</h2>
+
+<p>csv, 필드를 쉼표(,)로 구분한 텍스트 파일, 엑셀 양식의 데이터를 프로그램에 상관없이 쓰기 위한 데이터 형식이다. 탭(TSV), 빈칸(SSV)으로 구분한 것도, CSV라 통칭한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#===========================
+#csv 파일 읽어오기
+</span><span class="n">line_counter</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#파일의 총 줄수를 세는 변수
+</span><span class="n">data_header</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1">#data의 필드값을 저장하는 list
+</span><span class="n">customer_list</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1">#cutomer 개별 List를 저장하는 List
+</span>
+<span class="k">with</span> <span class="nb">open</span> <span class="p">(</span><span class="s">"customers.csv"</span><span class="p">)</span> <span class="k">as</span> <span class="n">customer_data</span><span class="p">:</span> 
+<span class="c1">#customer.csv 파일을 customer_data 객체에 저장
+</span>    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">customer_data</span><span class="p">.</span><span class="n">readline</span><span class="p">()</span> 
+        <span class="c1">#customer.csv에 한줄씩 data 변수에 저장
+</span>    
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span> <span class="k">break</span> <span class="c1">#데이터가 없을 때, Loop 종료
+</span>        
+        <span class="k">if</span> <span class="n">line_counter</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="c1">#첫번째 데이터는 데이터의 필드
+</span>            <span class="n">data_header</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">","</span><span class="p">)</span> 
+            <span class="c1">#데이터의 필드는 data_header List에 저장, 데이터 저장시 “,”로 분리
+</span>        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">customer_list</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">","</span><span class="p">))</span> 
+            <span class="c1">#일반 데이터는 customer_list 객체에 저장, 데이터 저장시 “,”로 분리
+</span>        
+        <span class="n">line_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Header :</span><span class="se">\t</span><span class="s">"</span><span class="p">,</span> <span class="n">data_header</span><span class="p">)</span> 
+<span class="c1">#데이터 필드 값 출력
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span> 
+    <span class="k">print</span> <span class="p">(</span><span class="s">"Data"</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s">":</span><span class="se">\t\t</span><span class="s">"</span><span class="p">,</span><span class="n">customer_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="c1">#데이터 출력 (샘플 10개만)
+</span>
+<span class="k">print</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">customer_list</span><span class="p">))</span> 
+<span class="c1">#전체 데이터 크기 출력
+</span>
+<span class="c1">#===============================
+# csv 파일 쓰기 예제
+</span><span class="n">line_counter</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">data_header</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">employee</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">customer_USA_only_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">customer</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="k">with</span> <span class="nb">open</span> <span class="p">(</span><span class="s">"customers.csv"</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">customer_data</span><span class="p">:</span>
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">customer_data</span><span class="p">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">line_counter</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">data_header</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">","</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">customer</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">","</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">customer</span><span class="p">[</span><span class="mi">10</span><span class="p">].</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s">"USA"</span><span class="p">:</span> 
+            <span class="c1">#customer 데이터의 offset 10번째 값
+</span>                <span class="n">customer_USA_only_list</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span> 
+                <span class="c1">#즉 country 필드가 “USA” 것만
+</span>        <span class="n">line_counter</span><span class="o">+=</span><span class="mi">1</span> <span class="c1">#customer_USA_only_list에 저장
+</span>        
+<span class="k">print</span> <span class="p">(</span><span class="s">"Header :</span><span class="se">\t</span><span class="s">"</span><span class="p">,</span> <span class="n">data_header</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">"Data :</span><span class="se">\t\t</span><span class="s">"</span><span class="p">,</span><span class="n">customer_USA_only_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="k">print</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">customer_USA_only_list</span><span class="p">))</span>
+
+<span class="k">with</span> <span class="nb">open</span> <span class="p">(</span><span class="s">"customers_USA_only.csv"</span><span class="p">,</span> <span class="s">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">customer_USA_only_csv</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">customer</span> <span class="ow">in</span> <span class="n">customer_USA_only_list</span><span class="p">:</span>
+        <span class="n">customer_USA_only_csv</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">","</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">customer</span><span class="p">).</span><span class="n">strip</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span><span class="o">+</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="c1">#cutomer_USA_only_list 객체에 있는 데이터를 customers_USA_only.csv 파일에 쓰기
+</span></code></pre></div></div>
+
+<h3 id="csv-객체를-활용해서-csv-사용하기">csv 객체를 활용해서 csv 사용하기</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">csv</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="p">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span>
+    <span class="n">delimiter</span><span class="o">=</span><span class="s">','</span><span class="p">,</span> <span class="n">quotecher</span><span class="o">=</span><span class="s">'"'</span><span class="p">,</span>
+    <span class="n">quoting</span><span class="o">=</span><span class="n">csv</span><span class="p">.</span><span class="n">QUOTE_ALL</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-22/4.png" alt="4.png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">csv</span>
+<span class="n">seoung_nam_data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">header</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">rownum</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"korea_floating_population_data.csv"</span><span class="p">,</span><span class="s">"r"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">"cp949"</span><span class="p">)</span> <span class="k">as</span> <span class="n">p_file</span><span class="p">:</span>
+    <span class="n">csv_data</span> <span class="o">=</span> <span class="n">csv</span><span class="p">.</span><span class="n">reader</span><span class="p">(</span><span class="n">p_file</span><span class="p">)</span> <span class="c1">#csv 객체를 이용해서 csv_data 읽기
+</span>    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv_data</span><span class="p">:</span> <span class="c1">#읽어온 데이터를 한 줄씩 처리
+</span>        <span class="k">if</span> <span class="n">rownum</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">row</span> <span class="c1">#첫 번째 줄은 데이터 필드로 따로 저장
+</span>        <span class="n">location</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+        <span class="c1">#“행정구역”필드 데이터 추출, 한글 처리로 유니코드 데이터를 cp949로 변환
+</span>
+        <span class="k">if</span> <span class="n">location</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">u"성남시"</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="c1"># 유니코드
+</span>            <span class="n">seoung_nam_data</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="c1">#”행정구역” 데이터에 성남시가 들어가 있으면 seoung_nam_data List에 추가
+</span>        <span class="n">rownum</span> <span class="o">+=</span><span class="mi">1</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"seoung_nam_floating_population_data.csv"</span><span class="p">,</span><span class="s">"w"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">"utf8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">s_p_file</span><span class="p">:</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="p">.</span><span class="n">writer</span><span class="p">(</span><span class="n">s_p_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="s">"'"</span><span class="p">,</span> <span class="n">quoting</span><span class="o">=</span><span class="n">csv</span><span class="p">.</span><span class="n">QUOTE_ALL</span><span class="p">)</span>
+<span class="c1"># csv.writer를 사용해서 csv 파일 만들기 delimiter 필드 구분자
+# quotechar는 필드 각 데이터는 묶는 문자, quoting는 묶는 범위
+</span><span class="n">writer</span><span class="p">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">header</span><span class="p">)</span> 
+<span class="c1">#제목 필드 파일에 쓰기
+</span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">seoung_nam_data</span><span class="p">:</span>
+    <span class="n">writer</span><span class="p">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> 
+    <span class="c1">#seoung_nam_data에 있는 정보 list에 쓰기
+</span></code></pre></div></div>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />주의 사항</li>
+  <li class="task-list-item">인코딩에 항상 주의할 것
+windows는 cp949, 리눅스와 맥은 utf8, utf8로 저장할 것</li>
+</ul>
+
+<h2 id="web">Web</h2>
+
+<p><img src="/images/2021-01-22/5.png" alt="5.png" /></p>
+
+<h3 id="html">html</h3>
+
+<ul>
+  <li>웹 상의 정보를 구조적으로 표현하기 위한 언어</li>
+  <li>tag를 사용해 제목, 단락, 링크 등 요소 표시를 위해 Tag를 사용한다.</li>
+  <li>모든 요소들은 꺾쇠 괄호 안에 둘러 쌓여 있다.</li>
+  <li>모든 HTML은 트리 모양의 포함 관계를 가진다.</li>
+  <li>일반적으로 웹 페이지의 HTML 소스파일은 컴퓨터가 다운로드 받은 후 웹 브라우저가 해석 및 표시한다.</li>
+</ul>
+
+<p>웹은 정보가 많기 때문에 데이터 분석을 위해 반드시 알아야 한다.</p>
+
+<h2 id="정규식regular-expression">정규식(regular expression)</h2>
+
+<p>정규표현식, regex 또는 regexp 등으로 불린다. 복잡한 문자열 패턴을 정의하는 문자 표현 공식을 말한다. 특정한 규칙을 가진 문자열의 집합을 추출한다. 문자열 처리에 유용하기 때문에 매우 중요하다.</p>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />정규식 연습장
+https://www.regexr.com/
+테스트 하고 싶은 Text란에 삽입해 연습해 볼 것</li>
+</ul>
+
+<p><img src="/images/2021-01-22/6.png" alt="6.png" /></p>
+
+<p><img src="/images/2021-01-22/7.png" alt="7.png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://bit.ly/3rxQFS4"</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">urllib</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">html_contents</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">html</span><span class="p">.</span><span class="n">read</span><span class="p">())</span>
+<span class="n">id_results</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="s">r"([A-Za-z0-9]+\*\*\*)"</span><span class="p">,</span> <span class="n">html_contents</span><span class="p">)</span>
+<span class="c1"># findall 전체 찾기, 패턴대로 데이터 찾기
+</span>
+<span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">id_results</span><span class="p">:</span>
+    <span class="k">print</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="c1"># 추출된 패턴은 튜플로 반환된다.
+# search는 한 개만 찾기, findall은 전체 찾기이다.
+</span></code></pre></div></div>
+
+<h2 id="xml">XML</h2>
+
+<p>데이터의 구조와 의미를 설명하는 TAG를 사용하여 표시하는 언어, TAG와 TAG 사이에 값이 표시되고 구조적인 정보를 표현할 수 있다. 정규표현식으로 Parsing이 가능하지만 좀 더 손쉬운 도구인 BeautifulSoup를 사용한다.</p>
+
+<p><img src="/images/2021-01-22/8.png" alt="8.png" /></p>
+
+<p><img src="/images/2021-01-22/9.png" alt="9.png" /></p>
+
+<h2 id="json">JSON</h2>
+
+<p>JavaScript Object Notation을 이야기한다. 간결하며 기계와 인간이 모두 이해하기 쉬운 데이터 타입이다. json은 가독성이나 용량 면에서 XML보다 좋다. 그리고 dict 타입과 호환되는 것도 매우 큰 장점이라 할 수 있다.</p>
+
+<p><img src="/images/2021-01-22/10.png" alt="10.png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># json_example.json
+# {"employees":[
+# {"firstName":"John", "lastName":"Doe"},
+# {"firstName":"Anna", "lastName":"Smith"},
+# {"firstName":"Peter", "lastName":"Jones"}
+# ]}
+</span>
+<span class="c1"># =====================
+# json 읽기
+</span><span class="kn">import</span> <span class="nn">json</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"json_example.json"</span><span class="p">,</span> <span class="s">"r"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">"utf8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">json_data</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="s">"employees"</span><span class="p">])</span>
+
+<span class="c1">#======================
+# json 쓰기
+</span><span class="kn">import</span> <span class="nn">json</span>
+<span class="n">dict_data</span> <span class="o">=</span> <span class="p">{</span><span class="s">'Name'</span><span class="p">:</span> <span class="s">'Zara'</span><span class="p">,</span> <span class="s">'Age'</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">'Class'</span><span class="p">:</span> <span class="s">'First'</span><span class="p">}</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"data.json"</span><span class="p">,</span> <span class="s">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="p">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dict_data</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h1 id="마스터클래스">마스터클래스</h1>
+
+<h2 id="ai에는-어떤-분야들이-있나">ai에는 어떤 분야들이 있나?</h2>
+
+<h3 id="data-종류">data 종류</h3>
+
+<ul>
+  <li>text</li>
+  <li>image</li>
+  <li>tabular</li>
+  <li>sound</li>
+  <li>3d</li>
+  <li>…</li>
+</ul>
+
+<h3 id="ai-종류">ai 종류</h3>
+
+<ul>
+  <li>classification</li>
+  <li>clustering</li>
+  <li>recommand</li>
+  <li>RL</li>
+  <li>생성</li>
+  <li>…</li>
+</ul>
+
+<p>다양한 데이터와 다양한 ai 모델의 종류가 있고 그 조합에 따라 무궁무진한 분야가 나올 수 있다.</p>
+
+<h2 id="대학원을-간다면">대학원을 간다면?</h2>
+
+<h3 id="수학-지식">수학 지식</h3>
+
+<p>선형대수, 미적분, 통계학, 해석학(추천)</p>
+
+<p>수학은 어느 정도만 이해하면 된다. 논문의 수식이 무슨 말을 하는 지, 서적의 연습문제를 어느 정도 풀 수 있다면 OK다.</p>
+
+<h3 id="it-지식">IT 지식</h3>
+
+<p>코딩 실력이 많이 중요하다. OS와 DB에 대한 이해가 필요하다. Excel도 하면 좋다.</p>
+
+<h2 id="일반-회사에서-머신러닝-엔지니어란">일반 회사에서 머신러닝 엔지니어란?</h2>
+
+<p>모델을 만들기보단 모델을 이용한 응용에 집중한다. 실무에서는 경량화에 많은 노력을 한다.</p>
+
+<h2 id="데이터-사이언티스트란">데이터 사이언티스트란?</h2>
+
+<p>모델 설계, 데이터 분석, 통계, 경영분석 등 상당히 포괄적인 개념이다. 실무에서도 상당히 포괄적으로 업무를 할 가능성이 높다.</p>
+
+<h2 id="부스트-캠프-이외에-추가적으로-하면-좋은-것">부스트 캠프 이외에 추가적으로 하면 좋은 것</h2>
+
+<p>기술 예측에 우리는 힘을 써야 한다. 주식 공부를 하면 세상이 보인다.</p>
+
+<h2 id="머신러닝-엔지니어들의-기본소양들">머신러닝 엔지니어들의 기본소양들</h2>
+
+<p>스파크나 하둡 에어 플로 같은 데이터 분석도구들은 어느정도 다룰 줄 알아야 한다.</p>
+
+<p>장고같은 웹 도구들은 엔지니어의 기본소양이다. 보여주기에 좋다.</p>
+
+<p>클라우드 인프라(aws) 역시 사용할 줄 알아야 한다.</p>
+:ET

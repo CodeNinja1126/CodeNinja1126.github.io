@@ -1,0 +1,142 @@
+I"�<p>얼마 전에 운영체제 과제를 하다 시간을 날렸던 파일 접근 권한에 대해 이야기하려 한다.</p>
+
+<p>전에 했던 과제에 대해서는 링크 참조 -&gt; <a href="https://codeninja1126.github.io/002">https://codeninja1126.github.io/002</a></p>
+
+<h1 id="개요">개요</h1>
+
+<p><code class="language-plaintext highlighter-rouge">chmod</code> 명령어는 파일의 접근 권한을 설정하는 명령어이다.</p>
+
+<p>접근 권한은 파일을 단순 복사할 때 같은 설정으로 복사되지 않는 것을 보면,</p>
+
+<p>운영체제 내에 파일 시스템에 따로 저장이 되는 것 같다.</p>
+
+<h1 id="명령-형태">명령 형태</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chmod [옵션] [파일]
+</code></pre></div></div>
+
+<p>옵션은 12비트 비트맵으로 이루어져 있다.</p>
+
+<p>상위 3 비트는 특수 권한 설정에 관한 것이고, 하위 9비트가 <code class="language-plaintext highlighter-rouge">user</code>, <code class="language-plaintext highlighter-rouge">group</code>, <code class="language-plaintext highlighter-rouge">others</code> 순으로 읽기, 쓰기, 실행을 설정한다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">특수 권한</th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"><code class="language-plaintext highlighter-rouge">user</code></th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"><code class="language-plaintext highlighter-rouge">group</code></th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"><code class="language-plaintext highlighter-rouge">others</code></th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">setuid</td>
+      <td style="text-align: center">setgid</td>
+      <td style="text-align: center">sticky bit</td>
+      <td style="text-align: center">r</td>
+      <td style="text-align: center">w</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">r</td>
+      <td style="text-align: center">w</td>
+      <td style="text-align: center">x</td>
+      <td style="text-align: center">r</td>
+      <td style="text-align: center">w</td>
+      <td style="text-align: center">x</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>특수 권한 옵션은 생략이 가능하다</p>
+
+<p>예를 들어, user에게 읽기, 쓰기, 실행 권한을 부여하고 group에게 읽기, 실행 권한을 부여하려 한다.</p>
+
+<p>4(r) + 2(w) + 1(x) = 7(<code class="language-plaintext highlighter-rouge">user</code> 값)</p>
+
+<p>4(r) + 1(x) = 5(<code class="language-plaintext highlighter-rouge">group</code> 값)</p>
+
+<p>0(<code class="language-plaintext highlighter-rouge">others</code> 값)</p>
+
+<p>이렇게 설정이 되며</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chmod 750 [파일 이름]
+</code></pre></div></div>
+
+<p>이렇게 명령을 해주면 설정이 가능하다.</p>
+
+<p>이외에 <code class="language-plaintext highlighter-rouge">g+x</code>, <code class="language-plaintext highlighter-rouge">u-r</code> 과 같이 옵션을 주는 방법도 있는데, 굳이 알 필요는 없을 것 같다.</p>
+
+<p>비트맵 방식으로 모든 설정이 가능하다.</p>
+
+<h1 id="특수-권한-설정">특수 권한 설정</h1>
+
+<p>단순 읽기, 쓰기, 실행 권한을 제외한 다른 특수 권한에 대한 옵션이 있다.</p>
+
+<p>옵션값은 일반 접근 권한 설정과 비슷한 방식으로 계산한다.</p>
+
+<p>만약 setuid와 setgid를 설정한다고 하면</p>
+
+<p>4(setuid) + 2(setgid) = 6(특수 권한 값)</p>
+
+<p>명령은 일반 접근 권한 설정 한자리 수 앞에 특수 권한 값을 표기해주면 된다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chmod 6744 [파일 이름]
+</code></pre></div></div>
+
+<p>위에서 언급했듯이 옵션값을 따로 설정하지 않으면 생략해도 상관없고 0으로 표기해도 된다.</p>
+
+<h2 id="setuid">setuid</h2>
+
+<p><code class="language-plaintext highlighter-rouge">setuid</code>는 일반 사용자에게 사용자 권한으로 파일에 접근할 수 있도록 하는 옵션이다.</p>
+
+<p>사용자의 권한을 갖지 않는 다른 사용자에게 일부 중요한 기능에 접근할 수 있도록 해야 할 때가 있는데,</p>
+
+<p>그러한 경우 사용할 수 있는 옵션이다.</p>
+
+<h2 id="setgid">setgid</h2>
+
+<p><code class="language-plaintext highlighter-rouge">setgid</code>는 일반 사용자에게 사용자 그룹의 권한으로 파일에 접근할 수 있도록 하는 옵션이다.</p>
+
+<p>내용 자체는 <code class="language-plaintext highlighter-rouge">setuid</code>와 대동소이한데, <code class="language-plaintext highlighter-rouge">setgid</code> 같은 경우는 공유 디렉토리 같이 용도가 <code class="language-plaintext highlighter-rouge">setuid</code>와 다른 경우에 사용하는 것 같다.</p>
+
+<p>이에 대해서는 따로 공부가 필요할 것 같다.</p>
+
+<h2 id="sticky-bit">sticky bit</h2>
+
+<p><code class="language-plaintext highlighter-rouge">sticky bit</code>는 접근 권한이 777인 파일에 대해서 일반사용자에 의한 삭제를 막는 옵션이다.</p>
+
+<p>파일 삭제는 <code class="language-plaintext highlighter-rouge">root</code>와 파일 소유자만 가능하다.</p>
+
+<p>공유 디렉토리 내에서 자유롭게 접근할 수 있는 파일에 대해서 마음대로 삭제를 하는 경우를 막는 용도로 사용한다.</p>
+
+<h1 id="정리">정리</h1>
+
+<p>접근 권한은 평소 리눅스 환경에 익숙하지 못해 잘 알지 못했던 개념이었다.</p>
+
+<p>알고 있었다면, 아마 이전에 과제를 하다 시간을 잡아먹지는 않았을 것이다.</p>
+
+<p>비록 지금은 그 용도에 적절하게 하나 하나 사용할 일은 없겠지만,</p>
+
+<p>앞으로 같은 일이 반복되지 않게 공부를 해나가야 겠다.</p>
+:ET

@@ -1,0 +1,522 @@
+I"L�<h1 id="pandas">Pandas</h1>
+
+<ul>
+  <li>구조화된 데이터의 처리를 지원하는 Python 라이브러리</li>
+  <li>panel data → pandas</li>
+  <li>고성능 array 계산 라이브러리인 numpy와 통합하여,
+강력한 ‘스프레드시트’처리 기능을 제공</li>
+  <li>인덱싱, 연산용 함수, 전처리 함수 등을 제공함</li>
+  <li>데이터 처리 및 통계 분석을 위해 사용</li>
+</ul>
+
+<p><img src="/images/2021-01-28/22/1.png" alt="1.png" /></p>
+
+<h2 id="데이터-불러오기">데이터 불러오기</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data_url</span> <span class="o">=</span> <span class="s">'[데이터 url]'</span>
+<span class="n">df_data</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_url</span><span class="p">,</span> <span class="n">sep</span><span class="s">'\s+'</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span>
+<span class="c1"># csv 타입 데이터 로드, seperate는 빈 공간으로 지정함
+</span>
+<span class="n">df_data</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
+<span class="c1"># 첫 5개의 데이터를 가져옴
+</span></code></pre></div></div>
+
+<p>데이터들은 numpy의 array형태로 이루어져 있음. 이상적인 경우에는 csv 형태로 데이터를 받아올 수도 있지만 대부분의 경우에는 데이터베이스에서 자료를 추출해와 처리하기 쉬운 형태로 바꾸어주어야 한다.</p>
+
+<h2 id="series">Series</h2>
+
+<p>DataFrame 중 하나의 Column에 해당하는 object</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="n">list_data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">example_obj</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">list_data</span><span class="p">)</span>
+<span class="n">example_obj</span>
+<span class="s">'''
+0    1
+1    2
+2    3
+3    4
+4    5
+dtype: int64
+'''</span>
+<span class="n">index_name</span> <span class="o">=</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span><span class="s">'b'</span><span class="p">,</span><span class="s">'c'</span><span class="p">,</span><span class="s">'d'</span><span class="p">,</span><span class="s">'e'</span><span class="p">]</span>
+<span class="n">example_obj</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">list_data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index_name</span><span class="p">)</span>
+<span class="n">example_obj</span>
+<span class="s">'''
+a    1
+b    2
+c    3
+d    4
+e    5
+dtype: int64
+'''</span>
+<span class="n">dict_data</span> <span class="o">=</span> <span class="p">{</span><span class="s">'a'</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s">'b'</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="s">'c'</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="s">'d'</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="s">'e'</span><span class="p">:</span><span class="mi">5</span><span class="p">}</span>
+<span class="n">example_obj</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dict_data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'exmaple_obj'</span><span class="p">)</span>
+<span class="n">example_obj</span>
+<span class="s">'''
+a    1.0
+b    2.0
+c    3.0
+d    4.0
+e    5.0
+Name: exmaple_obj, dtype: float64
+'''</span>
+<span class="n">example_obj</span><span class="p">[</span><span class="s">'a'</span><span class="p">]</span>
+<span class="c1"># 1.0
+</span>
+<span class="n">example_obj</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1"># 2.0
+</span>
+<span class="n">example2</span> <span class="o">=</span> <span class="n">example_obj</span><span class="p">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">example2</span>
+<span class="s">'''
+a    1
+b    2
+c    3
+d    4
+e    5
+Name: exmaple_obj, dtype: int64
+'''</span>
+<span class="n">example_obj</span><span class="p">.</span><span class="n">values</span>
+<span class="c1"># array([1., 1., 3., 4., 5.])
+</span>
+<span class="n">example_obj</span><span class="p">.</span><span class="n">index</span>
+<span class="c1"># Index(['a', 'b', 'c', 'd', 'e'], dtype='object')
+</span>
+<span class="n">dict_data_1</span> <span class="o">=</span> <span class="p">{</span><span class="s">'a'</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s">'b'</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="s">'d'</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="s">'e'</span><span class="p">:</span><span class="mi">5</span><span class="p">}</span>
+<span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">,</span> <span class="s">'d'</span><span class="p">,</span> <span class="s">'e'</span><span class="p">,</span> <span class="s">'f'</span><span class="p">,</span> <span class="s">'g'</span><span class="p">,</span> <span class="s">'h'</span><span class="p">]</span>
+<span class="n">series_obj_1</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dict_data_1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">indexes</span><span class="p">)</span>
+<span class="n">series_obj_1</span>
+<span class="s">'''
+a    1.0
+b    2.0
+c    3.0
+d    4.0
+e    5.0
+f    NaN
+g    NaN
+h    NaN
+dtype: float64
+'''</span>
+<span class="c1"># 기본적으로 dataframe과 series는 인덱스가 기준이 된다.
+# 따라서 위와 같은 경우는 값이 없는 인덱스에 NaN값이 들어 갔다.
+</span>
+<span class="n">dict_data_1</span> <span class="o">=</span> <span class="p">{</span><span class="s">'a'</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s">'b'</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="s">'d'</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="s">'e'</span><span class="p">:</span><span class="mi">5</span><span class="p">}</span>
+<span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">,</span> <span class="s">'d'</span><span class="p">]</span>
+<span class="n">series_obj_1</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dict_data_1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">indexes</span><span class="p">)</span>
+<span class="n">series_obj_1</span>
+<span class="s">'''
+a    1
+b    2
+c    3
+d    4
+dtype: int64
+'''</span>
+</code></pre></div></div>
+
+<h2 id="dataframe">DataFrame</h2>
+
+<p>data table 전체를 포함하는 object이다. 값에 접근하려면 index와 column 모두 알아야 한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dict_1</span> <span class="o">=</span> <span class="p">{</span><span class="s">'first_name'</span><span class="p">:</span> <span class="p">[</span><span class="s">'hyun'</span><span class="p">,</span> <span class="s">'ga'</span><span class="p">,</span> <span class="s">'woo'</span><span class="p">],</span>
+        <span class="s">'last_name'</span><span class="p">:</span> <span class="p">[</span><span class="s">'han'</span><span class="p">,</span> <span class="s">'kim'</span><span class="p">,</span> <span class="s">'han'</span><span class="p">],</span>
+        <span class="s">'age'</span><span class="p">:</span> <span class="p">[</span><span class="mi">28</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">24</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dict_1</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">'first_name'</span><span class="p">,</span> <span class="s">'last_name'</span><span class="p">,</span> <span class="s">'age'</span><span class="p">])</span>
+<span class="s">'''
+  first_name	last_name	 age
+0	hyun	      han	       28
+1	ga	        kim	       30
+2	woo	        han	       24
+'''</span>
+</code></pre></div></div>
+
+<p>이렇게 dict 타입으로 DataFrame을 선언해 줄 수도 있지만 일반적으로는 csv 형태로 파일을 가져오기 때문에 이렇게 사용할 일은 거의 없다.</p>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />데이터 프레임 함수들은 내부의 값을 변화시키진 않는다.
+<code class="language-plaintext highlighter-rouge">inplace=true</code>를 넘길수 있는 함수는 내부의 값이 변화된다.
+일반적으로 값은 유지시키는게 맞다.</li>
+</ul>
+
+<h3 id="columns">columns</h3>
+
+<p>columns는 내가 보고 싶은 columns 값만 포함해 DataFrame을 짤 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">'first_name'</span><span class="p">,</span> <span class="s">'last_name'</span><span class="p">])</span>
+<span class="s">'''
+  first_name	last_name
+0	hyun	      han
+1	ga	        kim
+2	woo	        han
+'''</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">'first_name'</span><span class="p">,</span> <span class="s">'last_name'</span><span class="p">,</span> <span class="s">'sex'</span><span class="p">])</span>
+<span class="s">'''
+  first_name	last_name	sex
+0	hyun han	NaN
+1	ga	kim	NaN
+2	woo	han	NaN
+'''</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s">'first_name'</span><span class="p">]</span>
+<span class="s">'''
+0    hyun
+1      ga
+2     woo
+Name: first_name, dtype: object
+'''</span>
+<span class="c1"># Series의 형태로 반환
+</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'old'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="mi">25</span>
+<span class="s">'''
+first_name	last_name	age	old
+0	hyun	han	28	True
+1	ga	kim	30	True
+2	woo	han	24	False
+'''</span>
+
+<span class="k">del</span> <span class="n">df</span><span class="p">[</span><span class="s">'old'</span><span class="p">]</span>
+<span class="s">'''
+first_name	last_name	age
+0	hyun	han	28
+1	ga	kim	30
+2	woo	han	24
+'''</span>
+<span class="c1"># 아예 메모리 상에서 제거
+</span>
+<span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="s">'''
+first_name     ga
+last_name     kim
+age            30
+Name: 1, dtype: object
+'''</span>
+
+<span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="s">'first_name'</span><span class="p">,</span> <span class="s">'last_name'</span><span class="p">]]</span>
+<span class="s">'''
+first_name	last_name
+1	ga	kim
+2	woo	han
+'''</span>
+
+<span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="s">'''
+first_name     ga
+last_name     kim
+age            30
+Name: 1, dtype: object
+'''</span>
+<span class="s">'''
+선언했던 df의 경우에는 실제로 자료에 저장된 순서와 인덱스의 번호가 일치한다. 
+그래서 df.loc[1]과 같은 결과가 나오게 된 것이다. 
+하지만 자료의 순서와 인덱스의 번호가 일치 하지 않을 경우에는 다른 결과가 나올 수 있다. 
+즉, loc의 경우에는 인덱스 값을 기준으로하고, iloc는 저장된 자료의 순서를 기준으로 한다.
+'''</span>
+</code></pre></div></div>
+
+<h2 id="selection--drop">Selection &amp; Drop</h2>
+
+<h3 id="selection">Selection</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="n">T</span>
+<span class="c1"># 데이터의 형테를 확인하고자 이렇게 불러 확인을 많이 한다.
+</span>
+<span class="n">df</span><span class="p">[[</span><span class="s">'account'</span><span class="p">,</span> <span class="s">'street'</span><span class="p">,</span> <span class="s">'state'</span><span class="p">]].</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="c1"># 해당 column값만 뽑아줄 수 있다. 
+</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'account'</span><span class="p">]</span>
+<span class="c1"># Series형태로 반환
+</span>
+<span class="n">df</span><span class="p">[[</span><span class="s">'account'</span><span class="p">]]</span>
+<span class="c1"># Dataframe형태로 반환
+</span>
+<span class="n">df_series</span><span class="p">[</span><span class="n">df_series</span><span class="o">&lt;</span><span class="mi">250000</span><span class="p">]</span>
+<span class="c1"># boolean index도 가능
+</span>
+<span class="n">account_series</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">]]</span>
+<span class="c1"># fancy index로도 select가능하다.
+</span>
+<span class="c1">#===============================
+# iloc, loc, basic
+# basic
+</span><span class="n">df</span><span class="p">[[</span><span class="s">'name'</span><span class="p">,</span><span class="s">'street'</span><span class="p">]][:</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># column, index
+</span>
+<span class="c1"># iloc
+</span><span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">2</span><span class="p">,:</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># index, column
+</span>
+<span class="c1"># loc
+</span><span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">211829</span><span class="p">,</span><span class="mi">320563</span><span class="p">],</span> <span class="p">[</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'street'</span><span class="p">]]</span> <span class="c1"># index, column
+</span>
+<span class="c1"># 각각 입력되는 방식과 순서를 잘 기억할 것
+</span>
+<span class="c1">#================================
+# reset_index
+</span>
+<span class="n">df</span><span class="p">.</span><span class="n">reset_index</span><span class="p">()</span> 
+<span class="c1"># 새로운 인덱스가 생성된 dataframe을 반환함
+# drop=True를 변수로 넣으면 기존의 인덱스를 드랍함
+</span></code></pre></div></div>
+
+<h3 id="drop">drop</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="s">'city'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+<span class="n">df</span><span class="p">.</span><span class="n">drop</span><span class="p">([</span><span class="s">'city'</span><span class="p">,</span> <span class="s">'state'</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># axis축방향으로 해당 attribute를 drop
+</span></code></pre></div></div>
+
+<h2 id="dataframe-operation">DataFrame operation</h2>
+
+<h3 id="add">add</h3>
+
+<p><strong>Seires</strong></p>
+
+<p><img src="/images/2021-01-28/22/2.png" alt="2.png" /></p>
+
+<p><strong>DataFrame</strong></p>
+
+<p><img src="/images/2021-01-28/22/3.png" alt="3.png" /></p>
+
+<p><strong>Series+DataFrame</strong></p>
+
+<p><img src="/images/2021-01-28/22/4.png" alt="4.png" /></p>
+
+<h2 id="map-for-series">map for series</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s1</span> <span class="o">=</span> <span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">s1</span><span class="p">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="s">'''
+0    0
+1    1
+2    2
+3    3
+4    4
+dtype: int64
+'''</span>
+<span class="n">s1</span><span class="p">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">).</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="s">'''
+0     0
+1     1
+2     4
+3     9
+4    16
+dtype: int64
+'''</span>
+<span class="n">z</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s">'A'</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="s">'B'</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s">'C'</span><span class="p">}</span>
+<span class="n">s1</span><span class="p">.</span><span class="nb">map</span><span class="p">(</span><span class="n">z</span><span class="p">).</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="s">'''
+0    NaN
+1      A
+2      B
+3      C
+4    NaN
+dtype: object
+'''</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">))</span>
+<span class="n">s1</span><span class="p">.</span><span class="nb">map</span><span class="p">(</span><span class="n">s2</span><span class="p">).</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="s">'''
+0    10
+1    11
+2    12
+3    13
+4    14
+dtype: int64
+'''</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-28/22/5.png" alt="5.png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># replace
+</span><span class="n">df</span><span class="p">.</span><span class="n">sex</span><span class="p">.</span><span class="n">replace</span><span class="p">({</span><span class="s">'male'</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="s">'female'</span><span class="p">:</span><span class="mi">1</span><span class="p">})</span> <span class="c1"># 위와 같은 결과를 반환
+</span><span class="n">df</span><span class="p">.</span><span class="n">sex</span><span class="p">.</span><span class="n">replace</span><span class="p">([</span><span class="s">'male'</span><span class="p">,</span> <span class="s">'female'</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="c1"># 이렇게도 선언 가능
+</span></code></pre></div></div>
+
+<h2 id="apply">apply</h2>
+
+<p><img src="/images/2021-01-28/22/6.png" alt="6.png" /></p>
+
+<p><img src="/images/2021-01-28/22/7.png" alt="7.png" /></p>
+
+<p><img src="/images/2021-01-28/22/8.png" alt="8.png" /></p>
+
+<h2 id="pands-built-in-functions">Pands built-in functions</h2>
+
+<h3 id="describe">describe</h3>
+
+<ul>
+  <li>Numeric type 데이터의 요약 정보를 보여줌</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">describe</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="unique">unique</h3>
+
+<ul>
+  <li>series data의 유일한 값의 list를 반환함</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">race</span><span class="p">.</span><span class="n">unique</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="sum">sum</h3>
+
+<ul>
+  <li>axis 값에 따라 합의 Series를 반환함</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> 
+</code></pre></div></div>
+
+<h3 id="isnull">isnull</h3>
+
+<ul>
+  <li>값이 NaN이면 True인 DataFrame을 반환</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">isnull</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="sort_values">sort_values</h3>
+
+<ul>
+  <li>해당 컬럼의 값을 기준으로 정렬된 순서로 DataFrame을 반환</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s">'age'</span><span class="p">,</span> <span class="s">'earn'</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="correlation--covariance">Correlation &amp; Covariance</h3>
+
+<ul>
+  <li>값의 상관관계를 보여주는 함수</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">age</span><span class="p">.</span><span class="n">corr</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">earn</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="n">age</span><span class="p">[(</span><span class="n">df</span><span class="p">.</span><span class="n">age</span> <span class="o">&lt;</span> <span class="mi">45</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">age</span> <span class="o">&gt;</span><span class="mi">25</span><span class="p">)].</span><span class="n">corr</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">earn</span><span class="p">)</span>
+<span class="c1"># 이런 식으로 돈을 버는 나이를 조건으로 걸 수 있다.
+</span>
+<span class="n">df</span><span class="p">.</span><span class="n">age</span><span class="p">.</span><span class="n">cov</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">earn</span><span class="p">)</span>
+<span class="c1"># 공분산, 나중에 배울것
+</span>
+<span class="n">df</span><span class="p">.</span><span class="n">corrwith</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">earn</span><span class="p">)</span> 
+<span class="c1"># df.earn과 다른 모든 값의 상관관계를 보여준다.
+</span>
+<span class="n">df</span><span class="p">.</span><span class="n">sex</span><span class="p">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> 
+<span class="c1"># 값의 전체 비율을 확인할 수 있다.
+</span></code></pre></div></div>
+
+<h1 id="딥러닝-학습방법-이해하기">딥러닝 학습방법 이해하기</h1>
+
+<ul>
+  <li>신경망 모델은 기본적으로 <strong>비선형 모델</strong>이다.</li>
+</ul>
+
+<p><img src="/images/2021-01-28/22/9.png" alt="9.png" /></p>
+
+<ul>
+  <li>신경망 모델은 가중치 행렬W를 통해 데이터X가 행렬O로 연결되게 된다.</li>
+</ul>
+
+<p><img src="/images/2021-01-28/22/10.png" alt="10.png" /></p>
+
+<ul>
+  <li>소프트맥스 함수는 주어진 데이터가 특정 클래스에 속할 확률이 얼마나 될지를 구하는 함수이다.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 1번 계산
+</span><span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">]])</span>
+<span class="n">denumerator</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="n">vec</span> <span class="o">-</span> <span class="n">np</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+<span class="n">numerator</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">denumerator</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">denumerator</span> <span class="o">/</span> <span class="n">numerator</span>
+<span class="s">'''
+array([[2.44728471e-01, 6.65240956e-01, 9.00305732e-02],
+       [9.00305732e-02, 2.44728471e-01, 6.65240956e-01],
+       [2.06106005e-09, 4.53978686e-05, 9.99954600e-01]])
+'''</span>
+<span class="c1"># 2번 계산
+</span><span class="n">denumerator</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span> 
+<span class="n">numerator</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">denumerator</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">denumerator</span> <span class="o">/</span> <span class="n">numerator</span>
+<span class="s">'''
+array([[2.44728471e-01, 6.65240956e-01, 9.00305732e-02],
+       [9.00305732e-02, 2.44728471e-01, 6.65240956e-01],
+       [2.06106005e-09, 4.53978686e-05, 9.99954600e-01]])
+'''</span>
+<span class="s">'''
+1번 계산은 지수함수의 오버플로우를 막기 위해 벡터의 최대 요소 값을 각 요소에서 빼주고 계산 한 것이다. 2번 계산은 공식대로 계산한 것으로 결과가 같다는 것을 알 수 있다.
+'''</span>
+</code></pre></div></div>
+
+<ul>
+  <li>학습을 할 때는 softmax()함수를 사용하고, 추론을 할 때는 가장 큰 요소 값의 위치를 반환하는 one_hot vector을 사용한다.</li>
+  <li>신경망은 <strong>선형모델과 활성함수(activation function)를 합성한 함수</strong>이다.</li>
+</ul>
+
+<p><img src="/images/2021-01-28/22/11.png" alt="11.png" /></p>
+
+<ul>
+  <li>잠재벡터를 보통 뉴런이라 부르며, 이것으로 이루어진 네트워크를 신경망이라 부른다.</li>
+</ul>
+
+<h2 id="활성함수">활성함수</h2>
+
+<ul>
+  <li>활성함수(activation)는 <strong>차원 $\mathbb R$ 위에 정의된 비선형 함수</strong>로서 딥러닝에서 매우 중요한 개념이다.</li>
+  <li><strong>활성함수를 쓰지 않으면 딥러닝은 선형모형과 차이가 없다.</strong></li>
+  <li>시그모이드(sigmoid) 함수나 tanh 함수는 전통적으로 많이 쓰이던 활성함수지만 <strong>딥러닝에선 ReLU 함수를 많이 쓰고있다.</strong></li>
+</ul>
+
+<p><img src="/images/2021-01-28/22/12.png" alt="12.png" /></p>
+
+<ul>
+  <li>신경망 네트워크에서의 활성함수와 선형모델의 결합을 식으로 표현하면 다음과 같다.</li>
+</ul>
+
+<p><img src="/images/2021-01-28/22/13.png" alt="13.png" /></p>
+
+<ul>
+  <li>이런 모델을 다층 퍼셉트론(Multi-layer Perceptron)이라고 하며, 선형변환 → 활성함수 → 선형변환 이런 식으로 선형 변환의 사이에 활성함수가 꼭 들어가야 한다.</li>
+</ul>
+
+<p><img src="/images/2021-01-28/22/14.png" alt="14.png" /></p>
+
+<ul>
+  <li>신경망 모델을 수식으로 나타내면 이와 같고 H행렬은 활성함수를 적용한 Z행렬이라고 보면 된다.</li>
+  <li>MLP의 패러미터는 L개의 가중치 행렬($W^{(1)}$, … , $W^{(L)}$)과 y절편의 해당하는 L개의 B 행렬로 이루어져있다.</li>
+  <li>이렇게 L번의 계산을 통해 출력을 내는 것을 순전파(forward propagation)라 부른다.</li>
+</ul>
+
+<h2 id="왜-층을-여러개를-쌓을까">왜 층을 여러개를 쌓을까</h2>
+
+<ul>
+  <li>층이 깊을수록 <strong>목적함수를 근사하는데 필요한 뉴런(노드)의 숫자가 훨씬 빨리 줄어들어 좀 더 효율적으로 학습이 가능</strong>하다. 즉 적은 변수로도 복잡한 함수를 근사할 수 있다.</li>
+  <li>반면, 층이 얇으면 뉴런의 숫자가 기하급수적으로 늘어나서 넓은 신경망이 되어야 한다.</li>
+  <li>대신 층이 깊어지면 최적화에 더 많은 노력을 기울여야 한다.</li>
+</ul>
+
+<h2 id="딥러닝-학습원리-역전파-알고리즘">딥러닝 학습원리: 역전파 알고리즘</h2>
+
+<p><img src="/images/2021-01-28/22/15.png" alt="15.png" /></p>
+
+<p><img src="/images/2021-01-28/22/16.png" alt="16.png" /></p>
+
+<ul>
+  <li>이 과정을 통해 각 층의 가중치 벡터를 학습시키게 된다.</li>
+</ul>
+
+<h2 id="연쇄법칙">연쇄법칙</h2>
+
+<p><img src="/images/2021-01-28/22/17.png" alt="17.png" /></p>
+
+<ul>
+  <li>따라서 역전파 알고리즘의 경우에는 순전파와 달리 메모리의 사용량이 많아 진다.</li>
+</ul>
+
+<h2 id="2층-mlp-역전파-계산과정">2층 MLP 역전파 계산과정</h2>
+
+<p><img src="/images/2021-01-28/22/18.png" alt="18.png" /></p>
+
+<p><img src="/images/2021-01-28/22/19.png" alt="19.png" /></p>
+:ET

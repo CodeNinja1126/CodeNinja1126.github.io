@@ -1,0 +1,164 @@
+I"#<h1 id="13일차---cnn">13일차 - CNN</h1>
+
+<h1 id="rgb-image-convolution">RGB Image Convolution</h1>
+
+<ul>
+  <li>인풋의 채널과 커널의 채널을 알면 아웃풋의 채널도 계산할 수 있다.</li>
+</ul>
+
+<p><img src="/images/2021-02-04/027/Untitled.png" alt="Untitled.png" /></p>
+<ul>
+  <li>CNN의 발전과정은 parameter를 줄이고, 딥하게 가는 방향으로 발전한다. 그래서 neural network를 볼 때 parameter를 파악하는 것이 중요하다.</li>
+</ul>
+
+<h2 id="stride">Stride</h2>
+
+<ul>
+  <li>stride는 convolution 연산을 할 때, 한 번 연산을 할 때 움직이는 거리를 의미한다.</li>
+</ul>
+
+<p><img src="/images/2021-02-04/027/Untitled%201.png" alt="Untitled%201.png" /></p>
+<h2 id="padding">Padding</h2>
+
+<ul>
+  <li>가장 자리를 연산하지 못하는 문제가 있기 때문에 이를 해결하기 위해 가장자리에 추가로 값을 덧대어 준다.</li>
+</ul>
+
+<p><img src="/images/2021-02-04/027/Untitled%202.png" alt="Untitled%202.png" /></p>
+<ul>
+  <li>스트라이드와 패딩을 적절히 이용하면 출력값의 dimension을 입력값과 그대로 유지해줄 수 있다.</li>
+</ul>
+
+<h2 id="fully-connected-layer">Fully connected layer</h2>
+
+<p><img src="/images/2021-02-04/027/Untitled%203.png" alt="Untitled%203.png" /></p>
+<ul>
+  <li>CNN의 마지막 레이어로 엄청난 parameter를 가지게 된다. 따라서 이 layer의 깊이는 줄이고 Convolution layer를 깊게 쌓는 것이 정석이다.</li>
+</ul>
+
+<h2 id="1x1-convolution">1x1 convolution</h2>
+
+<p><img src="/images/2021-02-04/027/Untitled%204.png" alt="Untitled%204.png" /></p>
+<h1 id="modern-convolutional-neural-networks">Modern Convolutional Neural Networks</h1>
+
+<h2 id="alexnet">AlexNet</h2>
+
+<ul>
+  <li>Rectified Linear Unit(ReLU) activation</li>
+  <li>GPU implementation</li>
+  <li>Local response normalization, Overlapping pooling</li>
+  <li>Data augmentation</li>
+  <li>Dropout</li>
+</ul>
+
+<h3 id="relu">ReLU</h3>
+
+<ul>
+  <li>Preserves propertis of lenear models</li>
+  <li>Easy to optimize with gradient descent</li>
+  <li>Good generalization</li>
+  <li>Overcome the vanishing gradient problem</li>
+</ul>
+
+<h2 id="vggnet">VGGNet</h2>
+
+<ul>
+  <li>increasing depth with 3 * 3 convolution filters (with stride 1)</li>
+  <li>1*1 convolution for fully connected layers</li>
+  <li>Dropout (p=0.5)</li>
+</ul>
+
+<p><img src="/images/2021-02-04/027/Untitled%205.png" alt="Untitled%205.png" /></p>
+<h2 id="googlenet">GoogLeNet</h2>
+
+<h3 id="inception-block">Inception Block</h3>
+
+<p><img src="/images/2021-02-04/027/Untitled%206.png" alt="Untitled%206.png" /></p>
+<ul>
+  <li>Inception Block은 parameter의 개수를 줄여준다.</li>
+  <li>1 * 1 convolution은 채널 방향의 차원을 감소시킨다.</li>
+</ul>
+
+<p><img src="/images/2021-02-04/027/Untitled%207.png" alt="Untitled%207.png" /></p>
+<h2 id="resnet">ResNet</h2>
+
+<h3 id="identity-map">Identity map</h3>
+
+<p><img src="/images/2021-02-04/027/Untitled%208.png" alt="Untitled%208.png" /></p>
+<h2 id="densenet">DenseNet</h2>
+
+<h3 id="concatenation">concatenation</h3>
+
+<p><img src="/images/2021-02-04/027/Untitled%209.png" alt="Untitled%209.png" /></p>
+<ul>
+  <li>convolution으로 더하기 대신 concatenation해서 채널을 늘려주는 방식이다.</li>
+  <li>하지만 이럴 경우 parameter가 커질 수 있다.</li>
+  <li>DenseNet은 Concatenation으로 채널을 늘리는 Dense Block과 1*1 convolution으로 채널을 줄이는 Transition Block으로 나뉜다.</li>
+</ul>
+
+<h1 id="computer-vision">Computer Vision</h1>
+
+<h2 id="fully-convolutional-network">Fully Convolutional Network</h2>
+
+<p><img src="/images/2021-02-04/027/Untitled%2010.png" alt="Untitled%2010.png" /></p>
+<ul>
+  <li>FCN 이후로는 아웃풋이 줄어들기 때문에 이를 늘려줄 필요가 있다.</li>
+</ul>
+
+<h2 id="deconvolution">Deconvolution</h2>
+
+<p><img src="/images/2021-02-04/027/Untitled%2011.png" alt="Untitled%2011.png" /></p>
+<h2 id="dectection">Dectection</h2>
+
+<h3 id="r-cnn">R-CNN</h3>
+
+<ul>
+  <li>이미지 내에서 수없이 많은 region proposals를 뽑은 후 그것을 각각 AlexNet에 돌려서 분류하는 것이다.</li>
+  <li>하지만 이것은 너무 느리고 오래걸린다.</li>
+</ul>
+
+<h3 id="sppnet">SPPNet</h3>
+
+<ul>
+  <li>이미지 전체에 대해서 CNN을 돌리고, bounding 된 영역에 대한 텐서만을 가지고와 분류한다.</li>
+  <li>한번만 CNN을 돌리기 때문에 R-CNN보다 빠르다.</li>
+</ul>
+
+<h3 id="fast-r-cnn">Fast R-CNN</h3>
+
+<ul>
+  <li>SPPNet와 상당히 비슷한 개념이다.</li>
+  <li>2000개 정도의 영역을 뽑는다.</li>
+  <li>이미지 전체에 대해 CNN을 돌린다.</li>
+  <li>각 영역에 대해 ROI pooling을 해 fixed length feature를 얻는다.</li>
+  <li>이 fixed length feature를 NN을 돌려 분류를 한다.</li>
+</ul>
+
+<h3 id="faster-r-cnn">Faster R-CNN</h3>
+
+<ul>
+  <li>Region proposals도 NN으로 뽑자는 것</li>
+</ul>
+
+<p><strong>Region Proposal Network</strong></p>
+
+<ul>
+  <li>k개의 Anchor box를 가지고 의미있을 만한 bounding box를 찾는 것</li>
+</ul>
+
+<p><img src="/images/2021-02-04/027/Untitled%2012.png" alt="Untitled%2012.png" /></p>
+<h3 id="yolo">YOLO</h3>
+
+<ul>
+  <li>Bounding box를 찾는 것과 그것에 대한 분류를 동시에 하는 것</li>
+</ul>
+
+<p><img src="/images/2021-02-04/027/Untitled%2013.png" alt="Untitled%2013.png" /></p>
+<ul>
+  <li>결과적으로 다음과 같이 텐서의 크기가 결정된다.</li>
+  <li>S * S : Number of cells of the grid</li>
+  <li>B * 5 : B bounding boxes with offsets(x,y,w,h) and confidence</li>
+  <li>C : Number of classes</li>
+  <li>S * S * (B * 5 + C)</li>
+</ul>
+:ET

@@ -1,0 +1,585 @@
+I"��<h1 id="variable--list">Variable &amp; List</h1>
+
+<h2 id="variable--memory">Variable &amp; Memory</h2>
+
+<h3 id="variable변수">Variable(변수)</h3>
+
+<p>가장 기초적인 프로그래밍 문법 개념, 데이터를 저장하기 위한 메모리 공간의 프로그래밍 상 이름이다. 단순하게는 값을 저장하는 장소를 말한다고 할 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">professor_name</span> <span class="o">=</span> <span class="s">"Sungchul Choi"</span>
+</code></pre></div></div>
+
+<p>위의 코드는 professor_name라는 변수에 “Sungchul Choi”라는 값을 넣으라는 의미이다.</p>
+
+<p>변수는 메모리 주소를 가지고 있고 변수에 들어가는 값은 메모리 주소에 할당된다. 이는 응용이 os의 시스템 호출을 통해 메모리 공간에 값을 저장한다. 메모리가 할당되는 순간은 변수가 선언 되는 순간이다.</p>
+
+<p><strong>변수 선언 규칙</strong></p>
+
+<ul>
+  <li><strong>알파벳</strong>, <strong>숫자</strong>, <strong>언더바(_)</strong>로 선언 가능</li>
+  <li>변수 명은 <strong>의미 있는 단어</strong>로 표기하는 것이 좋다.</li>
+  <li><strong>대, 소문자</strong>를 구분한다.</li>
+  <li>if, 나 else 같은 <strong>예약어</strong>로는 변수 명으로 <strong>선언할 수 없다</strong>.</li>
+</ul>
+
+<h3 id="간단한-연산">간단한 연산</h3>
+
+<p><strong>Data type(기본 자료형)</strong></p>
+
+<p>파이썬이 처리할 수 있는 데이터 유형</p>
+
+<ul>
+  <li><strong>정수형 -</strong> 양/음의 정수 ex) <strong><em>data = 1</em></strong></li>
+  <li><strong>실수형</strong> - 소수점이 포함된 실수 ex) <strong><em>datat = 9.0</em></strong></li>
+  <li><strong>문자형</strong> - 따옴표(‘또는”)에 들어가 있는 문자형 ex) <strong><em>data = ‘abc’</em></strong></li>
+  <li><strong>논리 자료형</strong> - 참 또는 거짓 ex) <strong><em>data = True</em></strong></li>
+</ul>
+
+<p>파이썬은 코드의 값에 따라 변수의 자료형이 정해진다. 따라서 코드 실행 시점에 변수의 자료형이 정해지는 파이썬은 dynamic typing(동적 타이핑)언어라고 할 수 있다.</p>
+
+<p><strong>연산자와 피연산자</strong></p>
+
+<p>+, -, *, /같은 기호들을 연산자라고 한다. 연산자에 의해 계산이 되는 것들은 피연산자라고 한다. 기본적인 연산의 순서는 수학에서 연산 순서와 같다. 반드시 피연산자가 숫자일 필요는 없으며 문자열 간에는 덧셈이 가능하다. 하지만 이는 수학적인 덧셈이 아니고 두 문자열을 이어붙이는 concatenate이다.</p>
+
+<p>사칙 연산 이외에 연산은 다음과 같은 것이 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 제곱 연산
+</span><span class="n">a</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">a</span> <span class="o">**</span> <span class="mi">3</span>
+<span class="c1"># 125
+</span>
+<span class="c1"># 모듈러 연산
+</span><span class="n">a</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">a</span> <span class="o">%</span> <span class="mi">3</span>
+<span class="c1"># 2
+</span>
+<span class="c1"># 증가 연산
+</span><span class="n">a</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># a = a + 1와 같다.
+# a = 6
+</span>
+<span class="c1"># 감소 연산
+</span><span class="n">a</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">a</span> <span class="o">-=</span> <span class="mi">1</span> <span class="c1"># a = a - 1와 같다.
+# a = 4
+</span></code></pre></div></div>
+
+<p><strong>형변환</strong></p>
+
+<p>float()과 int()함수를 이용해 자료형을 바꾼 값을 얻을 수 있다. 하지만 이 때 함수의 매개변수로 들어간 변수는 자료형이 바뀌지 않는 것에 주의한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="nb">float</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="c1"># 10.0
+</span></code></pre></div></div>
+
+<p>type()으로 자료형을 알 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="c1"># &lt;class 'int'&gt;
+</span></code></pre></div></div>
+
+<h2 id="list">List</h2>
+
+<p>시퀀스 자료형, 여러 데이터들의 집합을 의미한다. int, float와 같은 다양한 자료형을 포함한다.  파이썬 리스트의 특징은 다음과 같다.</p>
+
+<ul>
+  <li><strong>다양한 자료형</strong>을 <strong>하나의 리스트</strong>안에 포함할 수 있다.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s">'2'</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]]</span>
+</code></pre></div></div>
+
+<ul>
+  <li>리스트에는 <strong>주소값이 저장</strong>된다.</li>
+</ul>
+
+<p>리스트에는 값이 아닌 주소값이 저장된다. 다음과 같은 선언을 생각해 보자.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span>
+</code></pre></div></div>
+
+<p>이 경우 단순히 주소값만 복사되므로 다음과 같은 결과를 낳는다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">a</span>
+<span class="c1"># [3, 2, 3, 4, 5]
+</span></code></pre></div></div>
+
+<p>따라서 list간 복사는 신중해야 하며 단순히 복사가 아닌 내용의 복사의 경우에는 다음과 같이 선언해 해결할 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:]</span>
+</code></pre></div></div>
+
+<p>하지만 이 방식도 리스트 안의 리스트의 내용까지는 복사하지 못하며 이를 위해서는 deepcopy를 사용해야 한다.</p>
+
+<h3 id="indexing">Indexing</h3>
+
+<p>list에 있는 값들은 주소(offset)를 가진다. 따라서 주소를 사용해 할당된 값을 호출한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s">'red'</span><span class="p">,</span> <span class="s">'blue'</span><span class="p">,</span> <span class="s">'green'</span><span class="p">]</span>
+<span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># 'red'
+</span></code></pre></div></div>
+
+<h3 id="slicing">Slicing</h3>
+
+<p>list의 값들을 잘라서 쓰는 것이 슬라이싱, list의 주소 값을 기반으로 부분 값을 반환한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cities</span> <span class="o">=</span> <span class="p">[</span><span class="s">'서울'</span><span class="p">,</span> <span class="s">'부산'</span><span class="p">,</span> <span class="s">'인천'</span><span class="p">,</span> <span class="s">'대구'</span><span class="p">,</span> <span class="s">'대전'</span><span class="p">,</span> <span class="s">'광주'</span><span class="p">,</span> <span class="s">'울산'</span><span class="p">,</span> <span class="s">'수원'</span><span class="p">]</span>
+<span class="n">cities</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span> <span class="c1"># [3,6)의 범위로 반환
+# ['대구', '대전', '광주']
+</span>
+<span class="n">cities</span><span class="p">[</span><span class="o">-</span><span class="mi">9</span><span class="p">:]</span> <span class="c1"># -9, 즉 처음부터 끝까지 반환
+# ['서울', '부산', '인천', '대구', '대전', '광주', '울산', '수원']
+</span>
+<span class="n">cities</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># 범위 내에 2의 간격으로 점프
+# ['서울', '인천', '대전', '울산']
+</span>
+<span class="n">cities</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># 역순으로 점프해서 반환
+# ['수원', '울산', '광주', '대전', '대구', '인천', '부산', '서울']
+</span></code></pre></div></div>
+
+<h3 id="list의-연산과-메소드">List의 연산과 메소드</h3>
+
+<p>List는 다음과 같은 연산과 메소드를 지원한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">color1</span> <span class="o">=</span> <span class="p">[</span><span class="s">'red'</span><span class="p">,</span> <span class="s">'blue'</span><span class="p">,</span> <span class="s">'green'</span><span class="p">]</span>
+<span class="n">color2</span> <span class="o">=</span> <span class="p">[</span><span class="s">'orange'</span><span class="p">,</span> <span class="s">'black'</span><span class="p">,</span> <span class="s">'white'</span><span class="p">]</span>
+<span class="n">color1</span> <span class="o">+</span> <span class="n">color2</span> <span class="c1"># concatenation
+# ['red', 'blue', 'green', 'orange', 'black', 'white']
+</span>
+<span class="n">color1</span> <span class="o">*</span> <span class="mi">2</span> <span class="c1"># 반복
+# ['red', 'blue', 'green', 'red', 'blue', 'green']
+</span>
+<span class="s">'red'</span> <span class="ow">in</span> <span class="n">color1</span> <span class="c1"># 원소가 포함되어 있는 지 논리 값 반환
+# True
+</span>
+<span class="n">color1</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">'white'</span><span class="p">)</span>
+<span class="n">color1</span>
+<span class="c1"># ['red', 'blue', 'green', 'white']
+</span>
+<span class="n">color1</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="s">'white'</span><span class="p">)</span>
+<span class="n">color1</span>
+<span class="c1"># ['red', 'blue', 'green']
+</span>
+<span class="k">del</span> <span class="n">color1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># ['blue', 'green']
+</span></code></pre></div></div>
+
+<h3 id="패킹과-언패킹">패킹과 언패킹</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">a</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+<span class="c1"># 1 2 3
+</span></code></pre></div></div>
+
+<h3 id="이차원-리스트">이차원 리스트</h3>
+
+<p>리스트안의 리스트를 만들어 행렬을 생성 가능하다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+<span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span>
+<span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">]</span>
+<span class="n">d</span>
+<span class="c1"># [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+</span>
+<span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+<span class="c1"># 3
+</span></code></pre></div></div>
+
+<p>이 경우에는 단순히 다음과 같이 선언할 경우, 내용까지 완벽하게 복사가 되지 않는다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+<span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span>
+<span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">]</span>
+<span class="n">d_copy</span> <span class="o">=</span> <span class="n">d</span><span class="p">[:]</span> 
+</code></pre></div></div>
+
+<p>따라서 내용까지 복사하기 위해 내장함수인 deepcopy를 사용한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">copy</span> <span class="k">as</span> <span class="n">cp</span>
+
+<span class="n">d_copy</span> <span class="o">=</span> <span class="n">cp</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h1 id="function-and-console-io">Function and Console I/O</h1>
+
+<h2 id="function">Function</h2>
+
+<p>어떤 일을 수행하는 코드의 덩어리이다. 반복적인 수행을 1회만 작성하고 수행할 수 있도록 하는 것이 함수의 용도이다. 또한 인터페이스만 알면 다른 사람의 코드를 사용하는데 유용하다. 함수의 기본적인 형태는 다음과 같다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">함수</span> <span class="n">이름</span><span class="p">(</span><span class="n">parmeter</span> <span class="c1">#1,..., ):
+</span>    <span class="n">수행문</span> <span class="c1">#1
+</span>    <span class="n">수행문</span> <span class="c1">#2
+</span>    <span class="k">return</span> <span class="n">value</span>
+</code></pre></div></div>
+
+<p>parameter는 함수의 입력 값 인터페이스를 의미하고, argument는 실제로 parameter에 실제로 대입된 값을 의미한다. 하지만 보통 그냥 parameter로 말할 때가 많다.</p>
+
+<p>함수를 사용할 때에는 함수의 인터페이스를 잘 이해해야 한다. parameter의 유무, return 값의 유무를 잘 알고 있어야 하고, 단순히 shell에 값이 표기된다고 해서 반드시 return 값이 존재하는 것이 아님을 유의해야 한다.</p>
+
+<h2 id="console-io">Console I/O</h2>
+
+<h3 id="input">input</h3>
+
+<p>input()함수는 console 상에서 입력값을 받는 함수이며 다음과 같이 사용할 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>input()는 문자열 형태로 값이 저장된다는 것을 반드시 주의해야 한다. int나 float형으로 값을 받고 싶으면 다음과 같이 선언하면 된다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">float_a</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s">'온도를 입력하세요: '</span><span class="p">))</span>
+<span class="n">int_a</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s">'나이를 입력하세요: '</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>input의 parameter는 출력되는 문자열이며 값을 입력받기 전에 console 상에 해당 문자열이 출력된다.</p>
+
+<h3 id="print">print</h3>
+
+<p>print()함수는 console에서 값을 출력하는 함수이다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'Hello world!'</span><span class="p">)</span>
+<span class="c1"># Hello world!
+</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Hello world!'</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="c1"># Hello world! 100
+</span></code></pre></div></div>
+
+<p>다른 자료형을 같이 출력하고 싶을 땐 콤마<code class="language-plaintext highlighter-rouge">,</code>를 사용하면 된다.</p>
+
+<p><strong>print formatting</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'%s %s'</span> <span class="o">%</span><span class="p">(</span><span class="s">'one'</span><span class="p">,</span> <span class="s">'two'</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'{} {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="s">'one'</span><span class="p">,</span> <span class="s">'two'</span><span class="p">))</span>
+<span class="c1"># one two
+</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'%d %d'</span> <span class="o">%</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'{} {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="c1"># 1 2
+</span></code></pre></div></div>
+
+<ul>
+  <li>%-format</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">"%datatype" %(value)</code> 형태로 출력한다. 자세한 포맷팅 방법은 다음과 같다.</p>
+
+<p><img src="/images/2021-01-19/1.png" alt="1.png" /></p>
+
+<ul>
+  <li>str.format</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">"{datatype}".format(argument)</code> 형태로 출력한다. 자세한 것은 다음과 같다.</p>
+
+<p><img src="/images/2021-01-19/2.png" alt="2.png" /></p>
+
+<ul>
+  <li>padding</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"fruit : {0:&lt;10s}, and something"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="s">'apple'</span><span class="p">))</span>
+<span class="c1"># fruit : apple     , and something
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">&lt;</code> 혹은 <code class="language-plaintext highlighter-rouge">&gt;</code> 기호를 사용해 왼쪽으로 정렬할 것인지 오른쪽으로 정렬할 것인지 결정할 수 있다.</p>
+
+<ul>
+  <li>naming</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"Product: %(name)10s, Price per unit: %(price)10.5f."</span> <span class="o">%</span><span class="p">{</span><span class="s">"name"</span><span class="p">:</span><span class="s">"Apple"</span><span class="p">,</span> <span class="s">"price"</span><span class="p">:</span><span class="mf">5.243</span><span class="p">})</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Product: {name:&gt;10s}, Price per unit: {price:10.5f}."</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"Apple"</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">5.243</span><span class="p">))</span>
+<span class="c1"># Product:      Apple, Price per unit:    5.24300.
+</span></code></pre></div></div>
+
+<p>이렇게 이름을 지정해 포맷팅하는 방법도 있다.</p>
+
+<ul>
+  <li>f-stirng</li>
+</ul>
+
+<p><img src="/images/2021-01-19/3.png" alt="3.png" /></p>
+
+<h1 id="conditionals-and-loops">Conditionals and Loops</h1>
+
+<h2 id="condition조건문">Condition(조건문)</h2>
+
+<p>조건에 따라 특정한 동작을 하게하는 명령어, 파이썬은 조건문으로 if, else, elif 등의 예약어를 사용한다. 조건문은 다음과 같은 형태로 선언된다. 이 때 조건문은 <strong>들여쓰기와 block로 구분</strong>된다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">&lt;</span><span class="n">조건</span><span class="o">&gt;</span> <span class="p">:</span>
+    <span class="o">&lt;</span><span class="n">명령어1</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">명령어2</span><span class="o">&gt;</span>
+    <span class="p">...</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="o">&lt;</span><span class="n">명령어1</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">명령어2</span><span class="o">&gt;</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Hello'</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"didn't come"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>조건문에 0이 아닌 숫자가 오면 참으로 간주한다.</p>
+
+<h3 id="비교-연산자">비교 연산자</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span> <span class="c1"># a가 b보다 작으면 True 반환
+</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span> <span class="c1"># a가 b보다 크면 True 반환
+</span><span class="n">a</span> <span class="o">&lt;=</span> <span class="n">b</span> <span class="c1"># a가 b보다 작거나 같으면 True 반환
+</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="n">b</span> <span class="c1"># a가 b보다 크거나 같으면 True 반환
+</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span> <span class="c1"># a와 b와 같으면 True 반환
+</span><span class="n">a</span> <span class="o">!=</span> <span class="n">b</span> <span class="c1"># a와 b가 다르면 True 반환
+</span><span class="n">a</span> <span class="ow">is</span> <span class="n">b</span> <span class="c1"># a와 b의 주소가 같다면 True 반환
+</span><span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">b</span> <span class="c1"># a와 b의 주소가 틀리다면 True 반환 
+</span></code></pre></div></div>
+
+<p><strong>is는 주소를 비교하는 것</strong>에 유의하여야 한다. 값이 같다고 해서 is 연산자가 True를 반환하지 않는다.</p>
+
+<h3 id="논리-연산자">논리 연산자</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="ow">or</span> <span class="n">b</span> <span class="c1"># a나 b 둘 중의 하나가 True면 True 반환
+</span><span class="n">a</span> <span class="ow">and</span> <span class="n">b</span> <span class="c1"># a와 b 모두가 True 면 True 반환
+</span><span class="ow">not</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c1"># a의 반대 값 반환
+</span><span class="nb">any</span><span class="p">([</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">])</span> <span class="c1"># a,b,c 중 하나라도 True면 True 반환
+</span><span class="nb">all</span><span class="p">([</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">])</span> <span class="c1"># a,b,c가 모두 True면 True 반환
+</span></code></pre></div></div>
+
+<h3 id="삼항연산자">삼항연산자</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># [참일 때 값] if [조건] else [거짓일 때 값]
+</span><span class="n">a</span> <span class="o">=</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">b</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">False</span>
+</code></pre></div></div>
+
+<h3 id="elif문">elif문</h3>
+
+<p>else if의 축약 정도로 생각하면 된다. 다음과 같은 형태로 선언된다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">조건</span> <span class="p">:</span> <span class="o">&lt;</span><span class="n">명령어1</span><span class="o">&gt;</span>
+<span class="k">elif</span> <span class="n">조건</span> <span class="p">:</span> <span class="o">&lt;</span><span class="n">명령어1</span><span class="o">&gt;</span>
+<span class="k">elif</span> <span class="n">조건</span> <span class="p">:</span> <span class="o">&lt;</span><span class="n">명령어1</span><span class="o">&gt;</span>
+<span class="k">else</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">명령어1</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<h2 id="loop반복문">Loop(반복문)</h2>
+
+<p>정해진 동작을 반복적으로 수행하게 하는 명령문, 반복문은 <strong>반복 시작 조건</strong>, <strong>종료 조건</strong>, <strong>수행 명령</strong>으로 구성된다. 반복문 역시 반복 구문은 <strong>들여쓰기와 block으로</strong> 구분된다. 예약어로는 <strong>for</strong>, <strong>while</strong>을 사용한다.</p>
+
+<h3 id="for">for</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># for [반복문 변수] in [시퀀스 자료형]
+</span><span class="k">for</span> <span class="n">looper</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"{}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">looper</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>파이썬의 for문은 범위 기반 for문으로 시퀀스 자료형의 크기만큼 반복되며 반복문 변수의 값이 순서대로 저장된다. 보통 다음과 같이 range()함수를 이용해 사용한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
+    <span class="o">&lt;</span><span class="n">명령문</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>이 때 range()함수는 리스트의 슬라이싱과 유사하며 첫번째 두번째 매개변수는 범위를 받고, 세번째 매개변수로는 점프의 간격을 받는다.</p>
+
+<p>파이썬에서는 for문과 함께 쓰이는 else문이 존재한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">if</span><span class="p">(...):</span>
+        <span class="k">break</span><span class="p">;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="o">&lt;</span><span class="n">명령문</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>for문에서의 else문은 break가 발생하지 않았을 경우, for문이 끝나고 else이후의 코드 블록이 실행된다.</p>
+
+<h3 id="while">while</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># while &lt;조건&gt;:
+</span><span class="k">while</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="o">&lt;</span><span class="n">명령문</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>이와 같이 선언하며 for문과 while문은 서로 변환될 수 있다. 보통 명확한 반복횟수를 모르면, while문을 사용한다.</p>
+
+<h3 id="반복의-제어">반복의 제어</h3>
+
+<p>break와 continue문을 이용해 반복문을 제어할 수 있다. break문은 명령문을 종료 하고, continue문은 해당 반복을 skip하고 다음 반복으로 넘어간다. 다음과 같이 사용한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h1 id="string-and-advanced-function-concept">String and advanced function concept</h1>
+
+<h2 id="string문자열">String(문자열)</h2>
+
+<p>문자열은 1byte크기로 한 글자씩 메모리 공간이 할당된다.  문자열의 각 문자는 개별주소를 갖고 리스트처럼 인덱스로 접근할 수 있다. 슬라이싱도 똑같이 할 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="s">'string'</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># 's'
+</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="c1"># 'tr'
+</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="c1"># 'ti'
+</span></code></pre></div></div>
+
+<p>덧셈을 통해 concatenate도 가능하다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="s">'string'</span>
+<span class="n">b</span> <span class="o">=</span> <span class="s">' man'</span>
+<span class="c1"># 'string man'
+</span></code></pre></div></div>
+
+<h3 id="문자열-함수">문자열 함수</h3>
+
+<p>다음과 같은 함수들이 있다.</p>
+
+<p><img src="/images/2021-01-19/4.png" alt="4.png" /></p>
+
+<p><img src="/images/2021-01-19/5.png" alt="5.png" /></p>
+
+<h3 id="특수한-문자">특수한 문자</h3>
+
+<p><img src="/images/2021-01-19/6.png" alt="6.png" /></p>
+
+<h3 id="raw-string">raw string</h3>
+
+<p>특수문자 기호인 <code class="language-plaintext highlighter-rouge">\</code> 나 <code class="language-plaintext highlighter-rouge">escape</code> 같은 글자를 무시하고 그대로 출력한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">raw_string</span> <span class="o">=</span> <span class="s">r"개행문자 \n"</span>
+<span class="k">print</span><span class="p">(</span><span class="n">raw_string</span><span class="p">)</span>
+<span class="c1"># 개행문자 \n
+</span></code></pre></div></div>
+
+<h2 id="번외-파일-관련-함수">[번외] 파일 관련 함수</h2>
+
+<p>파일 열기 및 닫기 함수</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"[파일명]"</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="c1"># 파일 열기
+</span><span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">readline</span><span class="p">()</span> <span class="c1"># 한 줄을 str로 읽어오는 함수
+</span><span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># 파일 닫기
+</span></code></pre></div></div>
+
+<h2 id="function2">function2</h2>
+
+<h3 id="함수-호출-방식">함수 호출 방식</h3>
+
+<p><strong>Call by Value</strong></p>
+
+<p>함수에 인자를 넘길 때 값만 넘김, 함수 내에서 인자 값 변 경시, 호출자에게 영향을 줌</p>
+
+<p><strong>Call by Reference</strong></p>
+
+<p>함수에 인자를 넘길 때 메모리 주소를 넘김. 함수 내에 인자 값 변경 시, 호출자의 값도 변경됨</p>
+
+<p>파이썬은 <strong>객체의 주소가 함수로 전달</strong>되는 방식이다. 전달된 객체를 참조하여 변경 시 호출자에게 영향을 주나, 새로운 객체를 만들 경우 호출자에게 영향을 주지 않는다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">spam</span><span class="p">(</span><span class="n">eggs</span><span class="p">):</span>
+    <span class="n">eggs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">eggs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span> <span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="n">ham</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">spam</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span> <span class="c1"># [0,1]
+</span></code></pre></div></div>
+
+<h3 id="변수의-범위">변수의 범위</h3>
+
+<p>변수가 사용되는 범위</p>
+
+<ul>
+  <li><strong>지역변수(local variable)</strong> - 함수 내에서만 사용</li>
+  <li><strong>전역변수(global variable)</strong> - 프로그램전체에서 사용</li>
+</ul>
+
+<p>함수 내에서 전역변수를 사용하려면 <strong>global</strong> 키워드를 사용한다. 함수 내에서 전역변수와 <strong>같은 이름</strong>으로 변수를 선언하면 <strong>새로운 지역 변수</strong>가 선언되는 것과 같다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">g_num</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">func</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">g_num</span> <span class="c1"># 전역변수 g_num
+</span>    <span class="k">return</span> <span class="n">g_num</span>
+<span class="k">def</span> <span class="nf">func1</span><span class="p">():</span>
+    <span class="n">g_num</span> <span class="c1"># 지역변수 g_num
+</span>    <span class="k">return</span> <span class="n">g_num</span>
+</code></pre></div></div>
+
+<h3 id="재귀함수">재귀함수</h3>
+
+<p>자기 자신을 호출하는 함수. 점화식과 같은 재귀적 수학 모형을 표현할 때 사용</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span> <span class="o">+</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-type-hint">function type hint</h3>
+
+<p>함수를 처음 사용하는 사람들에게 쉽게 인터페이스를 제공할 수 있음</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># def do_function(var_name: var_type) -&gt; return_type
+</span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">param</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+    <span class="k">return</span> <span class="s">'True'</span>   
+</code></pre></div></div>
+
+<h3 id="docstring">docstring</h3>
+
+<p>파이썬 함수에 대한 상세스펙을 사전에 작성, 세개의 따옴표로 docstring 영역을 표시한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+    <span class="s">'''
+    Return something
+        parameters
+            a (int): i dont know
+            b (int): i dont know this too.
+        returns:
+            ret (int): return something.
+    '''</span>
+    <span class="n">something</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">something</span>
+</code></pre></div></div>
+
+<h3 id="함수-작성-가이드-라인">함수 작성 가이드 라인</h3>
+
+<ul>
+  <li>함수는 가능하면 <strong>짧게</strong> 작성할 것</li>
+  <li>함수의 이름에 함수의 <strong>역할</strong>, <strong>의도</strong>를 명확히 드러낼 것</li>
+  <li><strong>유사</strong>한 역할을 하는 코드만 포함</li>
+  <li><strong>인자</strong>로 받은 값 자체를 <strong>바꾸지 말 것 (</strong>지역변수 선언)</li>
+  <li><strong>공통되는 부분은 함수로</strong> 작성</li>
+</ul>
+
+<h2 id="좋은-코드를-짜는-법">좋은 코드를 짜는 법</h2>
+
+<h3 id="파이썬-코딩-컨벤션">파이썬 코딩 컨벤션</h3>
+
+<ul>
+  <li>명확한 규칙 X</li>
+  <li>중요한 것은 <strong>일관성</strong></li>
+  <li>들여쓰기 공백은 4칸을 권장</li>
+  <li>한 줄은 79자까지</li>
+  <li>연산자는 1칸 이상 안띄움</li>
+  <li>주석의 최신화</li>
+  <li>코드의 마지막에는 항상 한 줄 추가</li>
+</ul>
+
+<p>최근에는 black이라는 모듈을 사용해 코드를 보기 좋게 수정할 수 있다.</p>
+:ET

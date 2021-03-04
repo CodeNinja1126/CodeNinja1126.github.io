@@ -1,0 +1,160 @@
+I"F7<p>몇일 전부터 edwith 머신러닝을 위한 파이썬 강의의 수강을 시작했다.</p>
+
+<p>이번에는 첫번째 강의인 파이써닉 코드에서 배웠던 점을 정리하려고 한다.</p>
+
+<h1 id="파이써닉-코드">파이써닉 코드</h1>
+
+<p>파이써닉 코드를 배우는 이유는 다음과 같다.</p>
+
+<ul>
+  <li>파이썬 스타일의 코딩 기법</li>
+  <li>파이썬 특유의 문법을 활용해 효율적으로 코드를 표현</li>
+  <li>고급 코드를 작성할수록 더 많이 필요해짐</li>
+</ul>
+
+<p>어떤 언어든 간에 만들어진 목적이 존재하고 그 목적에 맞게 코딩해야 한다.</p>
+
+<p>단순히 문법만 공부해서는 그 언어를 사용할 줄 안다고 말하기에는 무리가 있을 것이다.</p>
+
+<p>우리가 <code class="language-plaintext highlighter-rouge">c</code>에서 <code class="language-plaintext highlighter-rouge">goto</code>구문을 알아도 일반적인 상황에서는 사용하지 말 것을 배우는 것처럼,</p>
+
+<p>언어의 목적에 맞게 최적화된 스타일로 코딩하는 법을 배워야 할 것이다.</p>
+
+<h1 id="목차">목차</h1>
+
+<ul>
+  <li>Split &amp; Join</li>
+  <li>List Comprehension</li>
+  <li>Enumerate &amp; Zip</li>
+</ul>
+
+<h1 id="split--join">Split &amp; Join</h1>
+
+<p><code class="language-plaintext highlighter-rouge">split</code>과 <code class="language-plaintext highlighter-rouge">join</code>은 둘다 <code class="language-plaintext highlighter-rouge">str</code>의 메소드이다.</p>
+
+<p>문자열 처리에 관련된 메소드이다.</p>
+
+<h2 id="split">Split</h2>
+<p>String Type의 값을 나눠서 <code class="language-plaintext highlighter-rouge">List</code> 형태로 변환하는 함수이다.</p>
+
+<p>변수를 아무것도 안 넣었을 경우, 기본적으로 빈칸을 기준으로 나누게 된다.</p>
+
+<p>변수를 넣으면 해당 문자를 기준으로 나눌 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ls</span> <span class="o">=</span> <span class="s">'I am legend'</span><span class="p">.</span><span class="n">split</span><span class="p">()</span>
+</code></pre></div></div>
+<p>이 경우 <code class="language-plaintext highlighter-rouge">ls</code>는 <code class="language-plaintext highlighter-rouge">I</code>, <code class="language-plaintext highlighter-rouge">am</code>, <code class="language-plaintext highlighter-rouge">legned</code> 이렇게 세 개의 원소를 가진 리스트가 된다.</p>
+
+<p>아래의 경우에도 똑같이 ls는 위와 같은 값을 갖게 된다.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ls</span> <span class="o">=</span> <span class="s">'I,am,legend'</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">','</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="join">Join</h2>
+<p>String List를 합쳐 하나의 String으로 반환할 때 사용한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">name</span> <span class="o">=</span> <span class="s">' '</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">ls</span><span class="p">)</span>
+</code></pre></div></div>
+<p>이렇게 선언하면 <code class="language-plaintext highlighter-rouge">name</code>이 문자열 <code class="language-plaintext highlighter-rouge">I am legend</code>를 갖게 될 것이다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">.join(ls)</code>앞에 문자열은 합쳐지는 문자열들 사이에 들어갈 문자열이다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">name</span> <span class="o">=</span> <span class="s">','</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">ls</span><span class="p">)</span>
+</code></pre></div></div>
+<p>이렇게 선언하면</p>
+
+<p><code class="language-plaintext highlighter-rouge">name</code>은 문자열<code class="language-plaintext highlighter-rouge">I,am,legend</code>를 갖게 될 것이다.</p>
+
+<h1 id="list-comprehension">List Comprehension</h1>
+<p>기존 List를 사용하여 간단히 다른 List를 만드는 기법이다.</p>
+
+<p>파이썬에서 가장 많이 사용되는 기법 중 하나이다.</p>
+
+<p>일반적으로 for + append 보다 속도가 빠르다.</p>
+
+<p>조금 더 코드를 간결하게 만들 수 있는 장점이 있다.</p>
+
+<p>일반적으로 우리는 다음과 같이 loop + append 방법으로 리스트를 만든다.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+  <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div></div>
+<p>위와 같은 코드는 다음과 같은 방식으로 나타낼 수 있다.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+</code></pre></div></div>
+<p>이렇게 조금 더 간결하게 리스트를 만들 수 있다.</p>
+
+<p>여기에 조건을 거는 것도 가능하다.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>반복문을 다중으로 하는 것도 가능하다.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">word_1</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">word_2</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>앞에 표현식은 다양한 방법으로 표현 가능하며, 리스트로 표현식을 만들어 다음과 같이 다차원 리스트로 구현할 수도 있다.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s">'the'</span><span class="p">,</span> <span class="s">'hyun'</span><span class="p">,</span> <span class="s">'woo'</span><span class="p">,</span> <span class="s">'chae'</span><span class="p">,</span> <span class="s">'go'</span><span class="p">]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="n">w</span><span class="p">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">w</span><span class="p">.</span><span class="n">lower</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)]</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span> <span class="p">]</span>
+</code></pre></div></div>
+<p>참고로 <code class="language-plaintext highlighter-rouge">upper()</code>과 <code class="language-plaintext highlighter-rouge">lower()</code>는 <code class="language-plaintext highlighter-rouge">str</code>의 메소드로 구성된 문자를 각각 대문자화, 소문자화 하는 메소드이다.</p>
+
+<h1 id="enumerate--zip">Enumerate &amp; Zip</h1>
+
+<h2 id="enumerate">Enumerate</h2>
+
+<p>List의 element를 추출할 때 번호를 붙여서 추출할 때 사용한다.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s">'tic'</span><span class="p">,</span> <span class="s">'tac'</span><span class="p">,</span> <span class="s">'toe'</span><span class="p">]):</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>이렇게 선언할 경우 출력은 다음과 같다.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0 tic
+
+1 tac
+
+2 toe
+</code></pre></div></div>
+<p>다음과 같이 dict자료형에도 사용 가능하다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span> <span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">list</span><span class="p">)}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">enumerate</code>는 기본적으로 튜플의 형태로 값을 내보낸다.</p>
+
+<h2 id="zip">Zip</h2>
+
+<p>두 개의 List의 값을 병렬적으로 추출하는 함수이다.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">alist</span> <span class="o">=</span> <span class="p">[</span><span class="s">'a1'</span><span class="p">,</span> <span class="s">'a2'</span><span class="p">,</span> <span class="s">'a3'</span><span class="p">]</span>
+<span class="n">blist</span> <span class="o">=</span> <span class="p">[</span><span class="s">'b1'</span><span class="p">,</span> <span class="s">'b2'</span><span class="p">,</span> <span class="s">'b3'</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">alist</span><span class="p">,</span> <span class="n">blist</span><span class="p">):</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+</code></pre></div></div>
+<p>출력은 다음과 같다.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a1 b1
+
+a2 b2
+
+a3 b3
+</code></pre></div></div>
+<p><code class="language-plaintext highlighter-rouge">zip</code> 역시 튜플의 형태로 값을 내보낸다.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
+</code></pre></div></div>
+<p>이렇게 선언할 경우, 각 원소의 값은 다음과 같다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">a</code> : <code class="language-plaintext highlighter-rouge">(1, 10, 100)</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">b</code> : <code class="language-plaintext highlighter-rouge">(2, 20, 200)</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">c</code> : <code class="language-plaintext highlighter-rouge">(3, 30, 300)</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">enumerate</code>와 동시에 사용할 수도 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">alist</span><span class="p">,</span> <span class="n">blist</span><span class="p">)):</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</code></pre></div></div>
+<p>출력:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0 a1 b1
+1 a2 b2
+2 a3 b3
+</code></pre></div></div>
+:ET

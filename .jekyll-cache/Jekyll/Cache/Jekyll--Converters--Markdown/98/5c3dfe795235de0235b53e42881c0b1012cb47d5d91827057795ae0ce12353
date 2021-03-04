@@ -1,0 +1,67 @@
+I"<<h1 id="개요">개요</h1>
+
+<p>파이썬에도 여느 언어처럼 정렬 기능을 제공한다.</p>
+
+<p>대표적인 것이 리스트의 <code class="language-plaintext highlighter-rouge">sort</code> 메소드이다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">sort</code> 메소드는 기본적으로 다음과 같이 선언된다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">arr</span><span class="p">.</span><span class="n">sort</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h1 id="매개-변수">매개 변수</h1>
+
+<p><code class="language-plaintext highlighter-rouge">sort</code> 메소드는 다음과 같은 두 개의 인자를 전달받을 수 있다.</p>
+
+<p>이 두개의 인자는 키워드를 통해서만 전달할 수 있다.</p>
+
+<h2 id="reverse">reverse</h2>
+
+<p><code class="language-plaintext highlighter-rouge">reverse</code> 인자는 내림차순 정렬을 위한 인자이다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">sort</code> 메소드는 기본적으로 오름차순 정렬이기 때문에 내림차순 정렬을 하기 위해서는 다음과 같이 선언해 준다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">arr</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+<p>기본적으로 <code class="language-plaintext highlighter-rouge">reverse</code>인자는 <code class="language-plaintext highlighter-rouge">False</code>로 설정되어 있으며 값을 <code class="language-plaintext highlighter-rouge">True</code>로 바꾸어 주면 내림차순 정렬이 된다.</p>
+
+<h2 id="key">key</h2>
+
+<p><code class="language-plaintext highlighter-rouge">key</code>인자는 정렬할 원소가 리스트처럼 값이 여러 개일 경우, 비교할 key값을 설정하는 인자이다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">key</code>인자는 비교할 key값을 반환하는 함수를 받으며 다음과 같이 선언할 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">takeKey</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">elem</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="nb">list</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span> <span class="o">=</span> <span class="n">takeKey</span><span class="p">)</span>
+</code></pre></div></div>
+<p>이렇게 선언할 경우 각 원소의 두번째 인자를 key값으로 정렬을 수행한다.</p>
+
+<p>위에 두 인자를 다음과 같이 한꺼번에 선언할 수도 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">takeKey</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">elem</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="nb">list</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span> <span class="o">=</span> <span class="n">takeKey</span><span class="p">,</span> <span class="n">reverse</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h1 id="sorted">sorted()</h1>
+<p><code class="language-plaintext highlighter-rouge">sort</code>메소드와 거의 비슷한 기능을 하는 함수로 리스트를 매개로 받아 정렬을 할 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="nb">sorted</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">sort</code>메소드와 같이 <code class="language-plaintext highlighter-rouge">key</code>와 <code class="language-plaintext highlighter-rouge">reverse</code>인자를 받을 수 있으며 같은 기능을 수행한다.</p>
+
+<p>다음과 같이 선언해 사용할 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">takeKey</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">elem</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="nb">sorted</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">takeKey</span><span class="p">,</span> <span class="n">reverse</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+:ET

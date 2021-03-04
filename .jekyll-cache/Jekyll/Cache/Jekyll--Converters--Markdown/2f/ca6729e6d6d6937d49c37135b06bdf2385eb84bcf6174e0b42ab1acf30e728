@@ -1,0 +1,295 @@
+I"8|<h1 id="10일차---시각화-도구와-통계학">10일차 - 시각화 도구와 통계학</h1>
+
+<h1 id="matplotlib">matplotlib</h1>
+
+<ul>
+  <li>다양한 graph 지원, pandas 지원</li>
+  <li>pyplot 객체를 사용하여 데이터를 표시</li>
+  <li>pyplot 객체에 그래프들을 쌓은 다음 flush</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span> 
+</code></pre></div></div>
+
+<ul>
+  <li>argument를 kwargs로 받음</li>
+  <li>고정된 argument가 없어 레퍼런스를 보며 공부해야됨</li>
+  <li>이 때 중요한 것은 넘겨줄 데이터가 반드시 <strong>오름차순</strong>이어야 한다.</li>
+  <li>show를 하거나 cla함수 또는 savefig함수를 사용하면 모든 객체가 flush된다.</li>
+</ul>
+
+<h2 id="matplotlib의-기본적인-구조">matplotlib의 기본적인 구조</h2>
+
+<p><img src="/images/2021-01-30/Untitled.png" alt="Untitled.png" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">x_1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)]</span>
+
+<span class="n">y_1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">*</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_1</span><span class="p">]</span>
+<span class="n">y_2</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_1</span><span class="p">]</span>
+<span class="n">y_3</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_1</span><span class="p">]</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_2</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_3</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%201.png" alt="Untitled%201.png" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span> <span class="c1"># figure 반환
+</span><span class="n">fig</span><span class="p">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="c1"># 크기 지정
+</span><span class="n">ax_1</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># plot 생성
+</span><span class="n">ax_2</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> 
+<span class="s">'''
+이 때 앞의 두 값은 보여줄 grid의 형태(행과 열)를 의미 한다.
+같이 보여 줄 plot들은 모두 앞의 두 수가 일치 해야한다.
+그리고 마지막 번호가 grid의 인덱스를 의미한다.
+모르겠다면 해볼것
+'''</span>
+
+<span class="n">ax_1</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'b'</span><span class="p">)</span> <span class="c1"># c는 색을 의미
+</span><span class="n">ax_2</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_2</span><span class="p">,</span> <span class="n">y_2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'#00ff00'</span><span class="p">)</span> <span class="c1"># 이러게 RGB값으로도 색 지정가능
+</span><span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%202.png" alt="Untitled%202.png" /></p>
+<h2 id="style">Style</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'dashed'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'1-dimesion'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_2</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s">'dashdot'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'2-dimension'</span><span class="p">)</span>
+<span class="s">'''
+linestyle, label 설정
+'''</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'$\mathbb {S}\cup C \mathscr {K}$'</span><span class="p">)</span> <span class="c1"># 제목 수식도 가능
+</span><span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">shadow</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fancybox</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s">'lower right'</span><span class="p">)</span> <span class="c1"># 범례
+</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%203.png" alt="Untitled%203.png" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_2</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="n">x_1</span><span class="p">[</span><span class="mi">50</span><span class="p">],</span> <span class="n">y_1</span><span class="p">[</span><span class="mi">50</span><span class="p">],</span> <span class="s">'Line_1'</span><span class="p">)</span> <span class="c1"># 텍스트 위치
+</span><span class="n">plt</span><span class="p">.</span><span class="n">annotate</span><span class="p">(</span>
+    <span class="s">'Line_2'</span><span class="p">,</span>
+    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_1</span><span class="p">[</span><span class="mi">50</span><span class="p">],</span> <span class="n">y_2</span><span class="p">[</span><span class="mi">50</span><span class="p">]),</span> <span class="c1"># 화살표로 가리키는 위치
+</span>    <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">4000</span><span class="p">),</span> <span class="c1"># 텍스트 위치
+</span>    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s">'black'</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%204.png" alt="Untitled%204.png" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="p">.</span><span class="n">style</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="s">'ggplot'</span><span class="p">)</span> 
+<span class="c1"># 스타일 적용, 레퍼런스에 가면 많은 좋은 스타일이 있다.
+</span><span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%205.png" alt="Untitled%205.png" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s">'--'</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'0.7'</span><span class="p">)</span> <span class="c1"># 그리드 표현 여부 c는 투명도
+</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span> <span class="c1"># x 표현 범위
+</span><span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span> <span class="c1"># y 표현 범위
+</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%206.png" alt="Untitled%206.png" /></p>
+<h1 id="scatter">scatter</h1>
+
+<ul>
+  <li>scatter 함수를 사용한다.</li>
+  <li>marker: scatter 모양 지정</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">area</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="mi">15</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span> 
+<span class="c1"># alpha는 투명도
+# s는 넓이 지정, s 역시 시퀀스형 데이터
+</span><span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%207.png" alt="Untitled%207.png" /></p>
+<h1 id="bar">bar</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">5</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">51</span><span class="p">,</span><span class="mi">17</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">52</span><span class="p">,</span><span class="mi">19</span><span class="p">]]</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.00</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s">'b'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s">'g'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.50</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="c1"># 이 때 x값에 더해주는 값은 위치값이다.
+# 바텀값을 주면 위치를 위,아래로 조절할 수 있다.
+# barh함수로 수평막대를 그릴 수도 있다.
+</span><span class="n">plt</span><span class="p">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">X</span><span class="o">+</span><span class="mf">0.25</span><span class="p">,</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span><span class="s">'B'</span><span class="p">,</span><span class="s">'C'</span><span class="p">,</span><span class="s">'D'</span><span class="p">))</span> 
+<span class="c1"># x축에 이름 달아주기
+</span><span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%208.png" alt="Untitled%208.png" /></p>
+<h1 id="histogram">histogram</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">hist</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'y'</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span> <span class="c1"># bins는 막대 개수
+</span><span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%209.png" alt="Untitled%209.png" /></p>
+<h1 id="boxplot">boxplot</h1>
+
+<p><img src="/images/2021-01-30/Untitled%2010.png" alt="Untitled%2010.png" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="c1"># 100 * 5의 데이터
+</span><span class="n">plt</span><span class="p">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%2011.png" alt="Untitled%2011.png" /></p>
+<h1 id="seaborn">seaborn</h1>
+
+<ul>
+  <li>기존 matplotlib의 wrapper라고 보면된다.</li>
+  <li>간단한 코드와 예쁜 결과를 보여준다.</li>
+  <li>강의는 seaborn tutorial을 참조</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
+
+<span class="n">sns</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s">'darkgrid'</span><span class="p">)</span> <span class="c1"># 스타일 정하기
+</span><span class="n">tips</span> <span class="o">=</span> <span class="n">sns</span><span class="p">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s">'tips'</span><span class="p">)</span>
+<span class="n">fmri</span> <span class="o">=</span> <span class="n">sns</span><span class="p">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s">'fmri'</span><span class="p">)</span>
+<span class="n">sns</span><span class="p">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">'timepoint'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">'signal'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fmri</span><span class="p">)</span>
+<span class="s">'''
+기본적으로 x와 y에는 데이터가 들어가야 하지만
+data변수에 데이터프레임을 넘기면 
+x와 y에는 시각화할 column 값을 넘긴다.
+'''</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%2012.png" alt="Untitled%2012.png" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="p">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">'timepoint'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">'signal'</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s">'event'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fmri</span><span class="p">)</span>
+<span class="c1"># hue에는 원하는 column을 구분해 시각화 할 수 있다.
+</span></code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%2013.png" alt="Untitled%2013.png" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="p">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">'total_bill'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">'tip'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">tips</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%2014.png" alt="Untitled%2014.png" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="p">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">'total_bill'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">'tip'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">tips</span><span class="p">)</span> <span class="c1"># 선형 회귀
+</span></code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%2015.png" alt="Untitled%2015.png" /></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="p">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">'smoker'</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s">'time'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">tips</span><span class="p">)</span> <span class="c1"># bar chart
+</span></code></pre></div></div>
+
+<p><img src="/images/2021-01-30/Untitled%2016.png" alt="Untitled%2016.png" />
+이 외에도 distplot, violinplot, stripplot, swarmplot 등 다양한 기능들이 있다.</p>
+
+<h1 id="통계학">통계학</h1>
+
+<h2 id="모수">모수</h2>
+
+<ul>
+  <li><strong>통계적 모델링은 적절한 가정 위에서 확률분포를 추정(inference)</strong>하는 것이 목표이며, 기계학습과 통계학이 공통적으로 추구하는 목표이다.</li>
+  <li>그러나 유한한 개수의 데이터만 관찰해서 모집단의 분포를 정확하게 알아낸다는 것은 불가능하므로, <strong>근사적으로 확률분포를 추정</strong>할 수 밖에 없다.</li>
+  <li>예측 모형의 목적은 분포를 정확하게 맞추는 것보다 <strong>데이터와 추정 방법의 불확실성을 고려해서 위험을 최소화</strong> 하기 위한 것</li>
+  <li>데이터가 특정 확률분포를 따른다고 선험적으로(a priori) 가정한 후 그 분포를 결정하는 모수(parameter)를 추정하는 방법을 <strong>모수적(parametric) 방법론</strong>이라 한다.</li>
+  <li>특정 확률분포를 가정하지 않고 데이터에 따라 모델의 구조 및 모수의 개사구 유연하게 바뀌면 <strong>비모수(nonparametric) 방법론</strong>이라 부른다.</li>
+  <li>비모수 방법론은 <strong>모수를 사용하지 않는 것이 아니라는 것</strong>을 명심할 것</li>
+</ul>
+
+<h2 id="확률을-가정하기">확률을 가정하기</h2>
+
+<p>우선 히스토그램을 통해 모양을 관찰한다.</p>
+
+<ul>
+  <li>2개의 값만 가진다. → 베르누이분포</li>
+  <li>데이터가 n개의 이산적인 값을 가지는 경우 → 카테고리 분포, 다항 분포</li>
+  <li>데이터가 [0,1] 사이에서 값을 가지는 경우 → 베타분포</li>
+  <li>데이터가 0 이상의 값을 가지는 경우 → 감마분포, 로그정규분포 등</li>
+  <li>데이터가 $\mathbb R$ 전체에서 값을 가지는 경우 → 정규분포, 라플라스분포 등</li>
+</ul>
+
+<p>기계적으로 확률 분포를 가정해서는 안 된다. 반드시 <strong>데이터를 생성하는 원리를 먼저 고려하는 것이 원칙</strong>이다. 모수를 추정한 후에는 반드시 검정을 해야 한다.</p>
+
+<h2 id="모수를-추정하자">모수를 추정하자.</h2>
+
+<p><img src="/images/2021-01-30/Untitled%2017.png" alt="Untitled%2017.png" /></p>
+<ul>
+  <li><strong>통계량의 확률분포를 표집분포(sampling distribution)</strong>라 부르며, 특히 표본평균의 표집분표는 $N$이 커질수록 정규분포 $\mathscr N(\mu, \sigma^2\mid N)$을 따른다.</li>
+  <li>표본 분표(sample distribution)과 표본 분표(sampling distribution)은 다른 용어이다.</li>
+  <li>이를 <strong>중심극한정리(central limit theorem)</strong>이라 부르며, 모집단의 분포가 정규분포를 따르지 않아도 성립한다.</li>
+</ul>
+
+<h2 id="최대가능도-추정법">최대가능도 추정법</h2>
+
+<p><img src="/images/2021-01-30/Untitled%2018.png" alt="Untitled%2018.png" />
+<img src="/images/2021-01-30/Untitled%2019.png" alt="Untitled%2019.png" /></p>
+<h2 id="왜-로그가능도를-사용하는가">왜 로그가능도를 사용하는가?</h2>
+
+<ul>
+  <li>로그가능도를 최적화하는 모수 $\theta$는 가능도를 최적화하는 MLE가 된다.</li>
+  <li>데이터의 숫자가 적으면 상관없지만 만일 데이터의 숫자가 수억 단위가 된다면 컴퓨터의 정확도로는 가능도를 계산하는 것은 불가능하다.</li>
+  <li>데이터가 독립일 경우, 로그를 사용하면 가능도의 곱셈을 로그가능도의 덧셈으로 바꿀 수 있기 때문에 컴퓨터로 연산이 가능해진다.</li>
+  <li>경사하강법으로 가능도를 최적화할 때 미분 연산을 사용하게 되는데, 로그 가능도를 사용하면 연산량을 $O(N^2)$에서 $O(N)$으로 줄여준다.</li>
+  <li>대개의 손실함수의 경우 경사하강법을 사용하므로 음의 로그가능도(negative log-likelihood)를 최적화하게 된다.</li>
+</ul>
+
+<h2 id="최대가능도-추정법-예제-정규분포">최대가능도 추정법 예제: 정규분포</h2>
+
+<p><img src="/images/2021-01-30/Untitled%2020.png" alt="Untitled%2020.png" />
+<img src="/images/2021-01-30/Untitled%2021.png" alt="Untitled%2021.png" />
+<img src="/images/2021-01-30/Untitled%2022.png" alt="Untitled%2022.png" /></p>
+<ul>
+  <li>표본평균을 구하는 것과 최대가능도를 구하는 것은 같다.</li>
+</ul>
+
+<h2 id="최대가능도-추정법-예제-카테고리-분포">최대가능도 추정법 예제: 카테고리 분포</h2>
+
+<p><img src="/images/2021-01-30/Untitled%2023.png" alt="Untitled%2023.png" />
+<img src="/images/2021-01-30/Untitled%2024.png" alt="Untitled%2024.png" />
+<img src="/images/2021-01-30/Untitled%2025.png" alt="Untitled%2025.png" />
+<img src="/images/2021-01-30/Untitled%2026.png" alt="Untitled%2026.png" /></p>
+<ul>
+  <li>카테고리 분포의 MLE는 경우의 수를 세어서 비율을 구하는 것이다.</li>
+</ul>
+
+<h2 id="딥러닝에서-최대가능도-추정법">딥러닝에서 최대가능도 추정법</h2>
+
+<p><img src="/images/2021-01-30/Untitled%2027.png" alt="Untitled%2027.png" /></p>
+<h2 id="확률분포의-거리">확률분포의 거리</h2>
+
+<ul>
+  <li>기계학습에서 사용되는 손실함수들은 모델이 학습하는 확률분포와 데이터에서 관찰되는 확률분포의 거리를 통해 유도한다.</li>
+  <li>데이터 공간에 두 개의 확률분포 $P(x)$, $Q(x)$가 있을 경우 두 확률분포 사이의 거리를 계산할 때 다음과 같은 함수들을 이용한다.
+    <ol>
+      <li>총변동 거리 (Total Variation Distance, TV)</li>
+      <li>쿨백-라이블러 발산 (Kullback-Leibler Divergence, KL)</li>
+      <li>바슈타인 거리 (Wasserstein Distance)</li>
+    </ol>
+  </li>
+</ul>
+
+<h2 id="쿨백-라이블러-발산">쿨백-라이블러 발산</h2>
+
+<p><img src="/images/2021-01-30/Untitled%2028.png" alt="Untitled%2028.png" /></p>
+<ul>
+  <li>분류 문제에서 정답레이블을 P, 모델 예측을 Q라 두면 <strong>최대가능도 추정법은 쿨백-라이블러 발산을 최소화하는 것</strong>과 같다.</li>
+  <li>이는 거리 개념이 아니며 $\mathbb {KL}(P||Q) \ne \mathbb {KL}(Q||P)$ 임을 주의하라</li>
+</ul>
+
+<p><img src="/images/2021-01-30/Untitled%2029.png" alt="Untitled%2029.png" /></p>
+:ET

@@ -1,0 +1,107 @@
+I"(%<h1 id="개요">개요</h1>
+<p>리눅스는 내부적으로는 프로세스와 스레드를 따로 구별하지 않고 ‘태스크’라는 이름의 같은 형태로 다룬다.</p>
+
+<p>기본적으로 리눅스는 <code class="language-plaintext highlighter-rouge">pid</code>라는 고유값을 통해 태스크를 구분한다.</p>
+
+<p>하지만 실제로 스레드를 생성해서 <code class="language-plaintext highlighter-rouge">getpid()</code>함수를 호출하면 스레드의 고유한 값을 반환하지 않는다.</p>
+
+<p>부모 스레드의 <code class="language-plaintext highlighter-rouge">pid</code>값을 반환하며 같은 프로세스에서 생성된 스레드들은 모두 같은 <code class="language-plaintext highlighter-rouge">pid</code>값을 반환한다.</p>
+
+<p>하지만 리눅스에서는 스레드도 프로세스와 같은 형태로 생성되기 때문에 고유의 값이 존재한다.</p>
+
+<p>그것이 바로 <code class="language-plaintext highlighter-rouge">tid</code>이다.</p>
+
+<p>내부적으로는 프로세스와 스레드를 같은 형태로 처리하고, 사용자 수준에서는 오해가 없도록 같은 <code class="language-plaintext highlighter-rouge">pid</code>를 보여주는 것이다.</p>
+
+<h1 id="코드-예시">코드 예시</h1>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;sys/types.h&gt;
+#include &lt;sys/syscall.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;pthread.h&gt;
+</span>
+<span class="kt">void</span><span class="o">*</span> <span class="nf">getThreadPId</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">value</span><span class="p">){</span> <span class="c1">//스레드 함수</span>
+        <span class="n">pid_t</span> <span class="n">pid</span> <span class="o">=</span> <span class="n">getpid</span><span class="p">();</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"child's thread's pid: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pid</span><span class="p">);</span>
+        <span class="c1">//pid 출력</span>
+        
+        <span class="kt">int</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">gettid</span><span class="p">();</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"child's thread's tid: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tid</span><span class="p">);</span>
+        <span class="c1">//tid 출력</span>
+        
+        <span class="n">pthread_exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="c1">//스레드 종료</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+        <span class="n">pid_t</span> <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+        <span class="n">pid_t</span> <span class="n">pid1</span><span class="p">;</span>
+        <span class="n">pthread_t</span> <span class="n">thread_id</span><span class="p">;</span>
+        <span class="n">pthread_attr_t</span> <span class="n">attr</span><span class="p">;</span>
+
+
+        <span class="k">if</span><span class="p">(</span><span class="n">pid</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span> <span class="c1">// error</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"error </span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+                <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span> <span class="c1">// child 프로세스</span>
+                <span class="n">pid1</span> <span class="o">=</span> <span class="n">getpid</span><span class="p">();</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"child pid: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pid1</span><span class="p">);</span>
+                <span class="c1">//pid 출력</span>
+                
+                <span class="kt">int</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">gettid</span><span class="p">();</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"child's tid: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tid</span><span class="p">);</span>
+                <span class="c1">//tid 출력</span>
+
+                <span class="n">pthread_attr_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">attr</span><span class="p">);</span>
+                <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">thread_id</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">attr</span><span class="p">,</span> <span class="n">getThreadPId</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+                <span class="n">pthread_join</span><span class="p">(</span><span class="n">thread_id</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span>
+                <span class="c1">//스레드 생성 및 join</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                <span class="n">pid1</span> <span class="o">=</span> <span class="n">getpid</span><span class="p">();</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"parent's pid: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pid1</span><span class="p">);</span>
+                <span class="c1">//pid 출력</span>
+                
+                <span class="kt">int</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">gettid</span><span class="p">();</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"parent's tid: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tid</span><span class="p">);</span>
+                <span class="c1">//tid 출력</span>
+                
+                <span class="n">wait</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+                <span class="c1">//자식 프로세스 wait</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>fork()를 통해 자식 프로세스를 생성하고 자식 프로세스에 스레드를 생성했다.</p>
+
+<p>각각 부모 프로세스, 자식 프로세스, 자식 프로세스의 스레드의 <code class="language-plaintext highlighter-rouge">pid</code>와 <code class="language-plaintext highlighter-rouge">tid</code> 값을 출력한다.</p>
+
+<p>출력은 다음과 같다.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>parent's pid: 154
+child pid: 155
+parent's tid: 154
+child's tid: 155
+child's thread's pid: 155
+child's thread's tid: 156
+</code></pre></div></div>
+<p>부모와 자식 프로세서의 경우에는 <code class="language-plaintext highlighter-rouge">pid</code>와 <code class="language-plaintext highlighter-rouge">tid</code>값은 서로 일치한다.</p>
+
+<p>반면에 스레드의 <code class="language-plaintext highlighter-rouge">pid</code>와 <code class="language-plaintext highlighter-rouge">tid</code>값은 서로 일치하지 않는다.</p>
+
+<p>리눅스는 <code class="language-plaintext highlighter-rouge">tgid</code>라는 개념을 도입해 사용자로 하여금 일반적인 프로세스와 스레드 관계처럼 보이도록 했다.</p>
+
+<p>프로세스를 생성할 때에는 <code class="language-plaintext highlighter-rouge">tgid</code>를 태스크 고유의 id로 설정하고, 스레드를 생성할 경우에는 <code class="language-plaintext highlighter-rouge">tgid</code>를 부모의 id로 설정한다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">getpid()</code>함수를 호출하면 실제로는 <code class="language-plaintext highlighter-rouge">tgid</code>값을 반환하는 것이다.</p>
+
+<p>실제 태스크 고유의 값은 <code class="language-plaintext highlighter-rouge">getpid()</code>함수가 아닌 <code class="language-plaintext highlighter-rouge">gettid()</code>를 통해 알 수 있다.</p>
+
+<h1 id="정리">정리</h1>
+<h2 id="pid">pid</h2>
+<p>프로세스를 식별하기 위한 고유의 값, 하지만 실제로 태스크들이 가진 고유의 값은 아니며</p>
+
+<p>‘개념적으로’ 한 프로세스 안에 존재하는 태스크들이 공통적으로 갖는 값이다.</p>
+
+<h2 id="tid">tid</h2>
+<p>태스크를 식별하는 고유의 값, Thread ID라고도 불리며 커널 내부에서 태스크들을 구별하는 실질적인 고유의 이다.</p>
+:ET
